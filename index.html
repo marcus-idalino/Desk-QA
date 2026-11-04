@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Menu Enterprise - Central de Qualidade & SOP 99Food</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN para Ferramentas da Qualidade -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandYellow: '#FFD600',
+            brutalPink: '#FFE4E4',
+            brutalGreen: '#E4FFE4',
+            brutalBlue: '#E2F0FF'
+          },
+          boxShadow: {
+            'brutal-sm': '2px 2px 0px 0px #000000',
+            'brutal': '4px 4px 0px 0px #000000',
+            'brutal-lg': '6px 6px 0px 0px #000000',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #000000; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-track { background: #090d16; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+    @layer components {
+      .neo-card {
+        @apply bg-white dark:bg-slate-900 border-[3px] border-black dark:border-slate-800 rounded-2xl shadow-brutal dark:shadow-lg transition-all duration-200;
+      }
+      .neo-input {
+        @apply bg-white dark:bg-slate-950 border-2 border-black dark:border-slate-700 rounded-xl text-black dark:text-slate-100 font-semibold focus:ring-2 focus:ring-black dark:focus:ring-indigo-500 focus:outline-none transition-colors;
+      }
+      .neo-btn-primary {
+        @apply bg-black dark:bg-indigo-600 text-white border-2 border-black dark:border-transparent font-bold rounded-xl shadow-brutal-sm dark:shadow-none hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none transition-all;
+      }
+      .neo-btn-yellow {
+        @apply bg-brandYellow dark:bg-amber-500/20 text-black dark:text-amber-300 border-2 border-black dark:border-amber-500/40 font-bold rounded-xl shadow-brutal-sm hover:-translate-y-0.5 active:translate-y-0.5 transition-all;
+      }
+      .neo-nav-btn {
+        @apply w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold transition-all border-2 border-transparent;
+      }
+      .neo-nav-btn.active {
+        @apply bg-black text-brandYellow dark:bg-indigo-600 dark:text-white border-black dark:border-transparent shadow-brutal-sm dark:shadow-none;
+      }
+      .neo-nav-btn:not(.active) {
+        @apply text-slate-800 dark:text-slate-400 hover:bg-white hover:border-black dark:hover:bg-slate-800/60 dark:hover:text-slate-200;
+      }
+    }
+
+    .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(1.15); }
+    }
+  </style>
+
+  <script>
+    if (localStorage.theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+<body class="bg-brandYellow dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col md:flex-row antialiased transition-colors duration-300">
+
+  <!-- BARRA LATERAL -->
+  <aside class="w-full md:w-[270px] bg-white dark:bg-slate-900 border-r-[3px] border-black dark:border-slate-800 flex flex-col justify-between shrink-0 shadow-brutal dark:shadow-2xl z-20 transition-colors duration-300">
+    <div>
+      <div class="p-4 border-b-[3px] border-black dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-11 h-11 rounded-xl bg-brandYellow dark:bg-indigo-600 border-[3px] border-black dark:border-transparent flex items-center justify-center font-black text-black dark:text-white shadow-brutal-sm text-lg">
+            QA
+          </div>
+          <div>
+            <h1 class="text-xs font-black tracking-wider text-black dark:text-white uppercase flex items-center gap-1.5">
+              <span>Central de Qualidade</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span>
+            </h1>
+            <p class="text-[10px] text-gray-700 dark:text-indigo-400 font-bold uppercase tracking-wider">99Food</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links de Navegação Principal -->
+      <nav class="p-3 space-y-1.5 text-xs">
+        <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="neo-nav-btn active">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10-4a1 1 0 011-1h4a1 1 0 011 1v8a1 1 0 01-1 1h-4a1 1 0 01-1-1v-8z"/></svg>
+            <span>Painel Geral</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-green-200 text-green-900 border border-black font-bold">Ao Vivo</span>
+        </button>
+
+        <button onclick="switchTab('tickets')" id="tab-btn-tickets" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <span>RNCs &amp; Qualidade Lean</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-brandYellow text-black border border-black font-black" id="badge-rnc-count">0</span>
+        </button>
+
+        <button onclick="switchTab('audit')" id="tab-btn-audit" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Ficha de Auditoria</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-brandYellow text-black border border-black font-bold uppercase">SOP</span>
+        </button>
+
+        <button onclick="switchTab('calc-v5')" id="tab-btn-calc-v5" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <span>Calculadora v5.5 Oficial</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-200 text-amber-900 border border-black font-black">Planilha &amp; Grocery</span>
+        </button>
+
+        <button onclick="switchTab('ranking')" id="tab-btn-ranking" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span>Scorecard Equipe (30)</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-black font-bold">4 Squads</span>
+        </button>
+
+        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>Pareto &amp; Métricas QA</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-black font-bold">80/20</span>
+        </button>
+
+        <button onclick="switchTab('pdca')" id="tab-btn-pdca" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Planos de Ação (PDCA)</span>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-black font-bold" id="badge-pdca-count">2</span>
+        </button>
+
+        <button onclick="switchTab('disputes')" id="tab-btn-disputes" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>Contestações &amp; Recurso</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-900 border border-black font-bold">1</span>
+        </button>
+
+        <button onclick="switchTab('history')" id="tab-btn-history" class="neo-nav-btn">
+          <div class="flex items-center space-x-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Histórico de Auditorias</span>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-800 border border-black font-bold">3</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Status e Tema -->
+    <div class="p-3 border-t-[3px] border-black dark:border-slate-800 bg-gray-50 dark:bg-slate-900/80">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl border-2 border-black bg-brandYellow text-black font-black text-xs flex items-center justify-center shadow-brutal-sm">
+            MV
+          </div>
+          <div class="text-xs">
+            <p class="font-black text-black dark:text-slate-200 leading-tight">Marcus Vinicius</p>
+            <p class="text-gray-600 dark:text-slate-400 font-bold text-[10px]">Auditor QA Líder</p>
+          </div>
+        </div>
+
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="p-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-black text-black dark:text-amber-400 shadow-brutal-sm">
+          <span id="theme-icon-light" class="text-xs">☀️</span>
+          <span id="theme-icon-dark" class="text-xs hidden">🌙</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ÁREA PRINCIPAL -->
+  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-brandYellow dark:bg-slate-950 transition-colors duration-300">
+    <header class="h-16 border-b-[3px] border-black dark:border-slate-800 bg-white dark:bg-slate-900 px-6 flex items-center justify-between shrink-0 shadow-sm">
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="text-black dark:text-slate-100 font-black text-sm uppercase flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-brandYellow border-2 border-black inline-block"></span>
+          <span id="topbar-section-title">Painel Geral</span>
+        </span>
+        <span class="text-gray-400">/</span>
+        <span class="font-bold text-gray-700 dark:text-indigo-400 font-mono">Q-Desk ISO 9001 / Lean</span>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button onclick="openNewRncModal()" class="neo-btn-yellow px-3.5 py-1.5 text-xs flex items-center space-x-1.5">
+          <span>+ Nova RNC</span>
+        </button>
+        <button onclick="switchTab('audit')" class="neo-btn-primary px-3.5 py-1.5 text-xs flex items-center space-x-1.5">
+          <span>Nova Auditoria</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+
+      <!-- VIEW: RNCs & QUALIDADE LEAN (NOVO MÓDULO) -->
+      <section id="view-tickets" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-md bg-brandYellow text-black border-2 border-black text-[11px] font-black uppercase">ISO 9001:2015 &amp; Lean</span>
+              <span class="text-xs font-bold text-gray-700 dark:text-slate-400">• Q-Desk Architecture</span>
+            </div>
+            <h2 class="text-lg font-black text-black dark:text-white uppercase tracking-tight">Registro de Não Conformidades (RNC) &amp; Resolução 5W2H</h2>
+          </div>
+          <button onclick="openNewRncModal()" class="neo-btn-primary px-4 py-2 text-xs flex items-center space-x-2">
+            <span>+ Registrar RNC</span>
+          </button>
+        </div>
+
+        <!-- 4 CARDS LEAN -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="neo-card p-5">
+            <span class="text-[11px] font-black uppercase tracking-wider text-gray-700 dark:text-slate-400">Total de RNCs</span>
+            <div class="text-3xl font-black text-black dark:text-white mt-2 font-mono" id="rnc-kpi-total">0</div>
+            <p class="text-xs font-bold text-gray-600 dark:text-slate-400 mt-1">Registros sob gestão</p>
+          </div>
+
+          <div class="neo-card p-5 bg-brutalPink dark:bg-slate-900 border-red-700">
+            <span class="text-[11px] font-black uppercase tracking-wider text-red-900 dark:text-rose-400">Custo Total de Prejuízo</span>
+            <div class="text-3xl font-black text-red-700 dark:text-rose-400 mt-2 font-mono" id="rnc-kpi-custo">R$ 0,00</div>
+            <p class="text-xs font-bold text-red-800/80 mt-1">Cost of Poor Quality (COP)</p>
+          </div>
+
+          <div class="neo-card p-5">
+            <span class="text-[11px] font-black uppercase tracking-wider text-gray-700 dark:text-slate-400">RNCs Críticas</span>
+            <div class="text-3xl font-black text-amber-600 dark:text-amber-400 mt-2 font-mono" id="rnc-kpi-criticas">0</div>
+            <p class="text-xs font-bold text-amber-700 mt-1">Impacto direto no restaurante</p>
+          </div>
+
+          <div class="neo-card p-5 bg-brutalGreen dark:bg-slate-900 border-green-700">
+            <span class="text-[11px] font-black uppercase tracking-wider text-emerald-900 dark:text-emerald-400">Taxa de Ação 5W2H</span>
+            <div class="text-3xl font-black text-emerald-700 dark:text-emerald-400 mt-2 font-mono" id="rnc-kpi-resolucao">0%</div>
+            <p class="text-xs font-bold text-emerald-800 mt-1">Com plano corretivo vinculado</p>
+          </div>
+        </div>
+
+        <!-- GRÁFICOS STATUS & SEVERIDADE (99 PALETTE) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="neo-card p-5">
+            <div class="pb-3 border-b-2 border-black mb-4 flex justify-between items-center">
+              <h3 class="text-xs font-black uppercase tracking-wider text-black dark:text-white">Status das RNCs</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 border border-black">ISO 9001</span>
+            </div>
+            <div class="h-56 relative flex items-center justify-center">
+              <canvas id="rncStatusChart"></canvas>
+            </div>
+          </div>
+
+          <div class="neo-card p-5">
+            <div class="pb-3 border-b-2 border-black mb-4 flex justify-between items-center">
+              <h3 class="text-xs font-black uppercase tracking-wider text-black dark:text-white">Severidade dos Desvios</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 border border-black">Lean Six Sigma</span>
+            </div>
+            <div class="h-56 relative flex items-center justify-center">
+              <canvas id="rncSeverityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABELA DE RNCs -->
+        <div class="neo-card overflow-hidden">
+          <div class="p-4 border-b-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50 dark:bg-slate-950">
+            <h3 class="text-xs font-black uppercase text-black dark:text-white">Não Conformidades Registradas</h3>
+            <input type="text" id="rnc-search-input" oninput="renderRncTable()" placeholder="Buscar por título, origem ou status..." class="neo-input px-3 py-1.5 text-xs w-64">
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-semibold">
+              <thead class="bg-gray-100 dark:bg-slate-950 border-b-2 border-black text-black dark:text-slate-400">
+                <tr>
+                  <th class="p-3.5">ID</th>
+                  <th class="p-3.5">Título &amp; Origem</th>
+                  <th class="p-3.5">Severidade</th>
+                  <th class="p-3.5">Prejuízo</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5">5 Porquês</th>
+                  <th class="p-3.5">Plano 5W2H</th>
+                  <th class="p-3.5 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="rnc-table-body" class="divide-y-2 divide-black bg-white dark:bg-slate-900 text-black dark:text-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: DASHBOARD GERAL -->
+      <section id="view-dashboard" class="space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-black text-black dark:text-white uppercase tracking-tight">Painel de Controle e Qualidade do Menu</h2>
+          </div>
+          <select id="dash-filter-squad" class="neo-input p-2 text-xs">
+            <option value="ALL">Visão Consolidada: Todos os Squads</option>
+            <option value="Paulo Silva">Squad 1 - Paulo Silva (Internal)</option>
+            <option value="Carla Dias">Squad 2 - Carla Dias (Internal)</option>
+            <option value="Roberto Mendes">Squad 3 - Roberto Mendes (Vendor BPO)</option>
+            <option value="Fernanda Rocha">Squad 4 - Fernanda Rocha (Vendor BPO)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="neo-card p-5">
+            <span class="text-[11px] font-black uppercase text-gray-700 dark:text-slate-400">QA Score Geral</span>
+            <div class="text-4xl font-black text-black dark:text-emerald-400 mt-2 font-mono">92.4%</div>
+            <p class="text-xs font-bold text-green-700 mt-1">Meta Semanal (≥95%)</p>
+          </div>
+          <div class="neo-card p-5">
+            <span class="text-[11px] font-black uppercase text-gray-700 dark:text-slate-400">Amostragem</span>
+            <div class="text-4xl font-black text-black dark:text-white mt-2 font-mono">185 / 210</div>
+            <p class="text-xs font-bold text-gray-600 mt-1">88.1% inspecionado</p>
+          </div>
+          <div class="neo-card p-5 bg-brutalPink dark:bg-slate-900 border-red-700">
+            <span class="text-[11px] font-black uppercase text-red-900 dark:text-rose-400">Erros Fatais</span>
+            <div class="text-4xl font-black text-red-700 dark:text-rose-400 mt-2 font-mono">3.8%</div>
+            <p class="text-xs font-bold text-red-800 mt-1">Bloqueios SOP</p>
+          </div>
+          <div class="neo-card p-5">
+            <span class="text-[11px] font-black uppercase text-gray-700 dark:text-slate-400">Planos PDCA</span>
+            <div class="text-4xl font-black text-black dark:text-amber-400 mt-2 font-mono">2</div>
+            <p class="text-xs font-bold text-amber-700 mt-1">Aguardando sessão 1:1</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: FICHA DE AUDITORIA -->
+      <section id="view-audit" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-4 flex justify-between items-center bg-white dark:bg-slate-900">
+          <span class="px-2.5 py-1 rounded-lg bg-brandYellow text-black border-2 border-black font-black text-xs uppercase">
+            Ticket #228587 - Criação de Menu
+          </span>
+          <span class="text-xs font-bold text-gray-600 dark:text-slate-300">Auditor: Marcus Vinicius</span>
+        </div>
+        <div class="neo-card p-5 space-y-4">
+          <h3 class="text-sm font-black uppercase">Formulário Oficial de Auditoria SOP</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div>
+              <label class="block font-bold mb-1">Shop ID*</label>
+              <input type="text" id="input-shopId" value="5764616735802789885" class="neo-input w-full p-2 font-mono">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Analista Auditado*</label>
+              <select id="input-analyst" class="neo-input w-full p-2 font-bold"></select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Resultado Final</label>
+              <select id="audit-final-result" class="neo-input w-full p-2 font-black">
+                <option value="Aprovado" selected>Aprovado</option>
+                <option value="Aprovado com Feedback">Aprovado com Feedback</option>
+                <option value="Não Aprovado">Não Aprovado</option>
+              </select>
+            </div>
+          </div>
+          <button onclick="showToast('Auditoria finalizada e computada com sucesso!')" class="neo-btn-primary px-4 py-2 text-xs">
+            Finalizar Auditoria
+          </button>
+        </div>
+      </section>
+
+      <!-- VIEW: CALCULADORA v5.5 OFICIAL -->
+      <section id="view-calc-v5" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-md bg-brandYellow text-black border-2 border-black text-[11px] font-black uppercase">v5.5 Oficial</span>
+            <h2 class="text-lg font-black uppercase mt-1">Calculadora de Auditoria &amp; Grocery</h2>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="switchCalcSubtab('audit')" id="btn-calcsub-audit" class="px-3.5 py-1.5 rounded-lg font-black text-xs bg-brandYellow text-black border border-black shadow-brutal-sm">Auditoria</button>
+            <button onclick="switchCalcSubtab('grocery')" id="btn-calcsub-grocery" class="px-3.5 py-1.5 rounded-lg font-black text-xs text-gray-700 hover:text-black">Grocery</button>
+          </div>
+        </div>
+
+        <div id="subtab-calc-audit" class="space-y-4">
+          <div class="neo-card p-5">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label class="block font-black mb-1">Itens Sem Modificadores (B5)</label>
+                <input type="number" id="v5-inputB5" oninput="executarCalculosV5()" value="40" class="neo-input w-full p-2 text-center font-black">
+              </div>
+              <div>
+                <label class="block font-black mb-1">Grupos Modificadores</label>
+                <input type="number" id="v5-inputGrupoMod" oninput="executarCalculosV5()" value="26" class="neo-input w-full p-2 text-center font-black bg-amber-50">
+              </div>
+              <div>
+                <label class="block font-black mb-1">Itens c/ Preço Errado</label>
+                <input type="number" id="v5-inputC11" oninput="executarCalculosV5()" value="0" class="neo-input w-full p-2 text-center font-black text-red-600">
+              </div>
+            </div>
+            <div class="mt-4 p-3 rounded-xl border-2 border-black bg-green-100 text-green-900 font-black text-xs text-center" id="v5-status-resumo">
+              ✓ MENU APROVADO PELA REGRA OFICIAL
+            </div>
+          </div>
+        </div>
+
+        <div id="subtab-calc-grocery" class="hidden space-y-4">
+          <div class="neo-card p-5 text-center space-y-3">
+            <span class="text-xs font-black uppercase text-gray-600">Regra 30/70 Grocery Store</span>
+            <div class="text-5xl font-black font-mono text-emerald-600" id="v5-grocery-pct">36.0%</div>
+            <p class="text-xs font-bold text-gray-700">Comida Preparada (Meta mínima: 30%)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: SCORECARD 30 ANALISTAS -->
+      <section id="view-ranking" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card overflow-hidden">
+          <div class="p-4 border-b-2 border-black bg-gray-50 flex justify-between items-center">
+            <h3 class="text-xs font-black uppercase">Scorecard dos 30 Analistas</h3>
+            <select id="ranking-filter-squad" onchange="renderRankingTable()" class="neo-input p-1.5 text-xs font-bold">
+              <option value="ALL">Todos os Squads</option>
+              <option value="Paulo Silva">Squad 1 - Paulo Silva</option>
+              <option value="Carla Dias">Squad 2 - Carla Dias</option>
+              <option value="Roberto Mendes">Squad 3 - Roberto Mendes</option>
+              <option value="Fernanda Rocha">Squad 4 - Fernanda Rocha</option>
+            </select>
+          </div>
+          <table class="w-full text-left text-xs font-semibold">
+            <thead class="bg-gray-100 border-b-2 border-black">
+              <tr>
+                <th class="p-3">Posição &amp; Analista</th>
+                <th class="p-3">Líder</th>
+                <th class="p-3">Auditorias</th>
+                <th class="p-3">Score QA</th>
+                <th class="p-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-table-body" class="divide-y-2 divide-black bg-white"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: ANALYTICS / PARETO -->
+      <section id="view-analytics" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-6">
+          <h3 class="text-sm font-black uppercase mb-4">Diagrama de Pareto (80/20) - Ofensores da Qualidade</h3>
+          <div class="h-64 relative">
+            <canvas id="paretoChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: PDCA -->
+      <section id="view-pdca" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5">
+          <h3 class="text-sm font-black uppercase mb-2">Ciclo PDCA &amp; Sessões 1:1</h3>
+          <p class="text-xs font-semibold text-gray-600">Ações corretivas vinculadas aos desvios da equipe.</p>
+        </div>
+      </section>
+
+      <!-- VIEW: DISPUTES -->
+      <section id="view-disputes" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5">
+          <h3 class="text-sm font-black uppercase mb-2">Módulo de Calibração &amp; Recursos</h3>
+          <p class="text-xs font-semibold text-gray-600">Recursos de notas contestadas pela operação.</p>
+        </div>
+      </section>
+
+      <!-- VIEW: HISTÓRICO -->
+      <section id="view-history" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5">
+          <h3 class="text-sm font-black uppercase mb-2">Histórico Geral de Auditorias</h3>
+          <p class="text-xs font-semibold text-gray-600">Registros permanentes de todas as inspeções.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: NOVA RNC -->
+  <div id="modal-rnc" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="neo-card max-w-lg w-full p-6">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
+        <h3 class="font-black text-sm uppercase">Registrar Não Conformidade (RNC)</h3>
+        <button onclick="closeRncModal()" class="font-black text-lg">✕</button>
+      </div>
+      <div class="space-y-3 text-xs font-semibold">
+        <input type="hidden" id="rnc-modal-id">
+        <div>
+          <label class="block font-bold mb-1">Título da RNC*</label>
+          <input type="text" id="rnc-modal-titulo" placeholder="Ex: Erro no preço de item no Gattaran" class="neo-input w-full p-2">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Origem*</label>
+            <select id="rnc-modal-origem" class="neo-input w-full p-2 font-bold">
+              <option value="Auditoria SOP">Auditoria SOP</option>
+              <option value="Operação HRO">Operação HRO</option>
+              <option value="Reclamação de Parceiro">Reclamação de Parceiro</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Severidade*</label>
+            <select id="rnc-modal-severidade" class="neo-input w-full p-2 font-bold">
+              <option value="Crítica">Crítica</option>
+              <option value="Alta">Alta</option>
+              <option value="Média" selected>Média</option>
+              <option value="Baixa">Baixa</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Custo Estimado Prejuízo (R$)*</label>
+            <input type="number" id="rnc-modal-custo" step="0.01" value="0.00" class="neo-input w-full p-2 font-mono">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Status</label>
+            <select id="rnc-modal-status" class="neo-input w-full p-2 font-bold">
+              <option value="Aberto" selected>Aberto</option>
+              <option value="Em Análise">Em Análise</option>
+              <option value="Plano em Execução">Plano em Execução</option>
+              <option value="Concluído">Concluído</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Descrição Detalhada*</label>
+          <textarea id="rnc-modal-descricao" rows="3" placeholder="Detalhes da ocorrência..." class="neo-input w-full p-2"></textarea>
+        </div>
+      </div>
+      <div class="mt-4 pt-3 border-t-2 border-black flex justify-end space-x-2 text-xs">
+        <button onclick="closeRncModal()" class="px-3 py-2 border-2 border-black rounded-xl font-bold">Cancelar</button>
+        <button onclick="saveRncForm()" class="neo-btn-primary px-4 py-2">Salvar RNC</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: 5 PORQUÊS -->
+  <div id="modal-causa-raiz" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="neo-card max-w-xl w-full p-6 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-black mb-3">
+        <h3 class="font-black text-sm uppercase">Análise de Causa Raiz (5 Porquês)</h3>
+        <button onclick="closeCausaRaizModal()" class="font-black text-lg">✕</button>
+      </div>
+      <div class="space-y-2 text-xs font-semibold overflow-y-auto flex-1 pr-1">
+        <input type="hidden" id="causa-ticket-id">
+        <p id="causa-ticket-display" class="font-black text-xs p-2 rounded-lg bg-gray-100 mb-2"></p>
+        <input type="text" id="causa-pq-1" class="neo-input w-full p-2" placeholder="1º Por que ocorreu?">
+        <input type="text" id="causa-pq-2" class="neo-input w-full p-2" placeholder="2º Por que?">
+        <input type="text" id="causa-pq-3" class="neo-input w-full p-2" placeholder="3º Por que?">
+        <input type="text" id="causa-pq-4" class="neo-input w-full p-2" placeholder="4º Por que?">
+        <input type="text" id="causa-pq-5" class="neo-input w-full p-2" placeholder="5º Por que?">
+        <label class="block font-black text-red-600 mt-2">Causa Raiz Fundamental*</label>
+        <textarea id="causa-conclusao" rows="2" class="neo-input w-full p-2 border-red-600" placeholder="Conclusão objetiva..."></textarea>
+      </div>
+      <div class="mt-4 pt-3 border-t-2 border-black flex justify-end space-x-2 text-xs">
+        <button onclick="closeCausaRaizModal()" class="px-3 py-2 border-2 border-black rounded-xl font-bold">Cancelar</button>
+        <button onclick="saveCausaRaizForm()" class="neo-btn-primary px-4 py-2">Salvar 5 Porquês</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: 5W2H -->
+  <div id="modal-plano-5w2h" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="neo-card max-w-2xl w-full p-6 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-black mb-3">
+        <h3 class="font-black text-sm uppercase">Plano de Ação Corretiva (5W2H)</h3>
+        <button onclick="close5W2HModal()" class="font-black text-lg">✕</button>
+      </div>
+      <div class="space-y-3 text-xs font-semibold overflow-y-auto flex-1 pr-1">
+        <input type="hidden" id="plano-ticket-id">
+        <p id="plano-ticket-display" class="font-black text-xs p-2 rounded-lg bg-gray-100 mb-2"></p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input type="text" id="plano-what" placeholder="WHAT (O que será feito?)*" class="neo-input w-full p-2">
+          <input type="text" id="plano-why" placeholder="WHY (Por que será feito?)*" class="neo-input w-full p-2">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <input type="text" id="plano-where" placeholder="WHERE (Onde?)*" class="neo-input w-full p-2">
+          <input type="text" id="plano-who" placeholder="WHO (Quem?)*" class="neo-input w-full p-2">
+          <input type="text" id="plano-when" placeholder="WHEN (Quando?)*" class="neo-input w-full p-2">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <textarea id="plano-how" rows="2" placeholder="HOW (Como será feito?)*" class="neo-input sm:col-span-2 p-2"></textarea>
+          <div>
+            <input type="number" id="plano-how-much" step="0.01" value="0.00" placeholder="HOW MUCH (Custo R$)" class="neo-input w-full p-2 font-mono">
+            <select id="plano-status" class="neo-input w-full p-1.5 mt-2 font-bold">
+              <option value="Planejado">Planejado</option>
+              <option value="Em Andamento">Em Andamento</option>
+              <option value="Implementado">Implementado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 pt-3 border-t-2 border-black flex justify-end space-x-2 text-xs">
+        <button onclick="close5W2HModal()" class="px-3 py-2 border-2 border-black rounded-xl font-bold">Cancelar</button>
+        <button onclick="save5W2HForm()" class="neo-btn-primary px-4 py-2">Salvar 5W2H</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-black text-brandYellow px-5 py-3 rounded-xl border-[3px] border-black shadow-brutal flex items-center space-x-2 text-xs font-black uppercase">
+      <span>✓</span>
+      <span id="toast-msg">Notificação</span>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT DO CLIENTE -->
+  <script>
+    const API_BASE = '/api';
+
+    const TEAM_ROSTER = [
+      { name: "gabriel.brandao_v", leader: "Paulo Silva", audits: 8, avgScore: 82.5 },
+      { name: "marina.costa", leader: "Paulo Silva", audits: 7, avgScore: 98.6 },
+      { name: "lucas.ferreira", leader: "Paulo Silva", audits: 6, avgScore: 78.0 },
+      { name: "camila.duarte", leader: "Paulo Silva", audits: 8, avgScore: 99.2 },
+      { name: "fabricio.alves", leader: "Carla Dias", audits: 7, avgScore: 97.0 },
+      { name: "heitor.barbosa", leader: "Carla Dias", audits: 5, avgScore: 88.5 },
+      { name: "sabrina.santos", leader: "Roberto Mendes", audits: 8, avgScore: 98.4 },
+      { name: "vanessa.machado", leader: "Fernanda Rocha", audits: 7, avgScore: 97.2 }
+    ];
+
+    let appTickets = [];
+    let rncStatusChartInstance = null;
+    let rncSeverityChartInstance = null;
+    let paretoChartInstance = null;
+
+    async function fetchTickets() {
+      try {
+        const res = await fetch(`${API_BASE}/tickets`);
+        const json = await res.json();
+        if (json.success) {
+          appTickets = json.data;
+          renderRncTable();
+          updateRncMetrics();
+          return;
+        }
+      } catch (e) {
+        console.warn('Operando com fallback local.');
+      }
+
+      if (appTickets.length === 0) {
+        appTickets = [
+          {
+            id: 1,
+            titulo: "Preço Divergente no Cardápio Dine-In",
+            origem: "Auditoria SOP",
+            severidade: "Crítica",
+            custo_prejuizo: 350.00,
+            status: "Em Análise",
+            conclusao_causa: "Ausência de dupla checagem dos preços com modificadores",
+            what: "Revisar preços do parceiro no 99Admin"
+          }
+        ];
+      }
+      renderRncTable();
+      updateRncMetrics();
+    }
+
+    function renderRncTable() {
+      const tbody = document.getElementById('rnc-table-body');
+      const search = (document.getElementById('rnc-search-input')?.value || '').toLowerCase();
+      if (!tbody) return;
+
+      const filtered = appTickets.filter(t =>
+        t.titulo.toLowerCase().includes(search) ||
+        t.origem.toLowerCase().includes(search) ||
+        t.status.toLowerCase().includes(search)
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-gray-500 font-bold">Nenhum registro encontrado.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(t => `
+        <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/40">
+          <td class="p-3 font-mono font-bold text-xs">#${t.id}</td>
+          <td class="p-3">
+            <span class="font-black block text-black dark:text-white">${t.titulo}</span>
+            <span class="text-[10px] text-gray-500 font-bold uppercase">${t.origem}</span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+              t.severidade === 'Crítica' ? 'bg-red-200 text-red-900 border border-black' :
+              t.severidade === 'Alta' ? 'bg-amber-200 text-amber-900 border border-black' :
+              'bg-blue-100 text-blue-900 border border-black'
+            }">${t.severidade}</span>
+          </td>
+          <td class="p-3 font-mono font-black text-red-600">R$ ${(Number(t.custo_prejuizo) || 0).toFixed(2)}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              t.status === 'Concluído' ? 'bg-green-100 text-green-900' : 'bg-amber-100 text-amber-900'
+            }">${t.status}</span>
+          </td>
+          <td class="p-3">
+            ${t.conclusao_causa || t.causa_id ? '<span class="text-[10px] font-black text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-300">✓ Feita</span>' : '<span class="text-[10px] text-gray-400 italic">Pendente</span>'}
+          </td>
+          <td class="p-3">
+            ${t.what || t.plano_id ? '<span class="text-[10px] font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-300">✓ Ativo</span>' : '<span class="text-[10px] text-gray-400 italic">Pendente</span>'}
+          </td>
+          <td class="p-3 text-right space-x-1.5 whitespace-nowrap">
+            <button onclick="openCausaRaizModal(${t.id})" class="px-2 py-1 rounded-lg border border-black bg-brandYellow text-black font-black text-[10px]">5 Porquês</button>
+            <button onclick="open5W2HModal(${t.id})" class="px-2 py-1 rounded-lg border border-black bg-black text-white font-black text-[10px]">5W2H</button>
+            <button onclick="deleteRnc(${t.id})" class="p-1 text-red-600 font-bold hover:bg-red-50 rounded" title="Excluir">✕</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateRncMetrics() {
+      const total = appTickets.length;
+      const custoTotal = appTickets.reduce((acc, curr) => acc + (Number(curr.custo_prejuizo) || 0), 0);
+      const criticas = appTickets.filter(t => t.severidade === 'Crítica').length;
+      const comPlano = appTickets.filter(t => t.what || t.plano_id).length;
+      const resolucao = total > 0 ? ((comPlano / total) * 100).toFixed(0) : 0;
+
+      document.getElementById('rnc-kpi-total').innerText = total;
+      document.getElementById('badge-rnc-count').innerText = total;
+      document.getElementById('rnc-kpi-custo').innerText = `R$ ${custoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      document.getElementById('rnc-kpi-criticas').innerText = criticas;
+      document.getElementById('rnc-kpi-resolucao').innerText = `${resolucao}%`;
+
+      renderRncCharts();
+    }
+
+    function renderRncCharts() {
+      const statusCtx = document.getElementById('rncStatusChart')?.getContext('2d');
+      const severityCtx = document.getElementById('rncSeverityChart')?.getContext('2d');
+      if (!statusCtx || !severityCtx) return;
+
+      const statusMap = { 'Aberto': 0, 'Em Análise': 0, 'Plano em Execução': 0, 'Concluído': 0 };
+      const severityMap = { 'Crítica': 0, 'Alta': 0, 'Média': 0, 'Baixa': 0 };
+
+      appTickets.forEach(t => {
+        if (statusMap[t.status] !== undefined) statusMap[t.status]++;
+        if (severityMap[t.severidade] !== undefined) severityMap[t.severidade]++;
+      });
+
+      if (rncStatusChartInstance) rncStatusChartInstance.destroy();
+      rncStatusChartInstance = new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(statusMap),
+          datasets: [{
+            data: Object.values(statusMap),
+            backgroundColor: ['#FFD600', '#3b82f6', '#f59e0b', '#10b981'],
+            borderColor: '#000000',
+            borderWidth: 2
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      if (rncSeverityChartInstance) rncSeverityChartInstance.destroy();
+      rncSeverityChartInstance = new Chart(severityCtx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(severityMap),
+          datasets: [{
+            label: 'RNCs',
+            data: Object.values(severityMap),
+            backgroundColor: ['#ef4444', '#f97316', '#FFD600', '#10b981'],
+            borderColor: '#000000',
+            borderWidth: 2
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+    }
+
+    function openNewRncModal() {
+      document.getElementById('rnc-modal-id').value = '';
+      document.getElementById('rnc-modal-titulo').value = '';
+      document.getElementById('rnc-modal-custo').value = '0.00';
+      document.getElementById('rnc-modal-descricao').value = '';
+      document.getElementById('modal-rnc').classList.remove('hidden');
+    }
+
+    function closeRncModal() { document.getElementById('modal-rnc').classList.add('hidden'); }
+
+    async function saveRncForm() {
+      const payload = {
+        titulo: document.getElementById('rnc-modal-titulo').value.trim(),
+        origem: document.getElementById('rnc-modal-origem').value,
+        severidade: document.getElementById('rnc-modal-severidade').value,
+        custo_prejuizo: parseFloat(document.getElementById('rnc-modal-custo').value) || 0,
+        status: document.getElementById('rnc-modal-status').value,
+        descricao: document.getElementById('rnc-modal-descricao').value.trim()
+      };
+
+      if (!payload.titulo || !payload.descricao) {
+        alert('Preencha os campos obrigatórios da RNC.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/tickets`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          closeRncModal();
+          showToast('RNC salva com sucesso!');
+          await fetchTickets();
+          return;
+        }
+      } catch (e) {}
+
+      payload.id = Math.floor(100 + Math.random() * 900);
+      appTickets.unshift(payload);
+      closeRncModal();
+      renderRncTable();
+      updateRncMetrics();
+      showToast('RNC registrada localmente!');
+    }
+
+    async function deleteRnc(id) {
+      if (!confirm(`Excluir ticket #${id}?`)) return;
+      try {
+        await fetch(`${API_BASE}/tickets/${id}`, { method: 'DELETE' });
+      } catch (e) {}
+      appTickets = appTickets.filter(t => t.id !== id);
+      renderRncTable();
+      updateRncMetrics();
+      showToast('Ticket removido.');
+    }
+
+    function openCausaRaizModal(id) {
+      const t = appTickets.find(item => item.id === id);
+      if (!t) return;
+      document.getElementById('causa-ticket-id').value = t.id;
+      document.getElementById('causa-ticket-display').innerText = `RNC #${t.id}: ${t.titulo}`;
+      document.getElementById('causa-pq-1').value = t.por_que_1 || '';
+      document.getElementById('causa-pq-2').value = t.por_que_2 || '';
+      document.getElementById('causa-pq-3').value = t.por_que_3 || '';
+      document.getElementById('causa-pq-4').value = t.por_que_4 || '';
+      document.getElementById('causa-pq-5').value = t.por_que_5 || '';
+      document.getElementById('causa-conclusao').value = t.conclusao_causa || '';
+      document.getElementById('modal-causa-raiz').classList.remove('hidden');
+    }
+
+    function closeCausaRaizModal() { document.getElementById('modal-causa-raiz').classList.add('hidden'); }
+
+    async function saveCausaRaizForm() {
+      const id = document.getElementById('causa-ticket-id').value;
+      const payload = {
+        por_que_1: document.getElementById('causa-pq-1').value,
+        por_que_2: document.getElementById('causa-pq-2').value,
+        por_que_3: document.getElementById('causa-pq-3').value,
+        por_que_4: document.getElementById('causa-pq-4').value,
+        por_que_5: document.getElementById('causa-pq-5').value,
+        conclusao_causa: document.getElementById('causa-conclusao').value.trim()
+      };
+
+      if (!payload.conclusao_causa) {
+        alert('A causa raiz é obrigatória.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/tickets/${id}/causa-raiz`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          closeCausaRaizModal();
+          await fetchTickets();
+          showToast('5 Porquês salvos!');
+          return;
+        }
+      } catch (e) {}
+
+      const t = appTickets.find(item => item.id === parseInt(id, 10));
+      if (t) Object.assign(t, payload);
+      closeCausaRaizModal();
+      renderRncTable();
+      showToast('5 Porquês salvos!');
+    }
+
+    function open5W2HModal(id) {
+      const t = appTickets.find(item => item.id === id);
+      if (!t) return;
+      document.getElementById('plano-ticket-id').value = t.id;
+      document.getElementById('plano-ticket-display').innerText = `RNC #${t.id}: ${t.titulo}`;
+      document.getElementById('plano-what').value = t.what || '';
+      document.getElementById('plano-why').value = t.why || '';
+      document.getElementById('plano-where').value = t.where || '';
+      document.getElementById('plano-who').value = t.who || '';
+      document.getElementById('plano-when').value = t.when || '';
+      document.getElementById('plano-how').value = t.how || '';
+      document.getElementById('plano-how-much').value = t.how_much || 0;
+      document.getElementById('modal-plano-5w2h').classList.remove('hidden');
+    }
+
+    function close5W2HModal() { document.getElementById('modal-plano-5w2h').classList.add('hidden'); }
+
+    async function save5W2HForm() {
+      const id = document.getElementById('plano-ticket-id').value;
+      const payload = {
+        what: document.getElementById('plano-what').value.trim(),
+        why: document.getElementById('plano-why').value.trim(),
+        where: document.getElementById('plano-where').value.trim(),
+        who: document.getElementById('plano-who').value.trim(),
+        when: document.getElementById('plano-when').value.trim(),
+        how: document.getElementById('plano-how').value.trim(),
+        how_much: parseFloat(document.getElementById('plano-how-much').value) || 0,
+        status_acao: document.getElementById('plano-status').value
+      };
+
+      if (!payload.what || !payload.why || !payload.who || !payload.how) {
+        alert('Preencha os campos obrigatórios do 5W2H.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/tickets/${id}/plano-5w2h`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.success) {
+          close5W2HModal();
+          await fetchTickets();
+          showToast('Plano 5W2H salvo!');
+          return;
+        }
+      } catch (e) {}
+
+      const t = appTickets.find(item => item.id === parseInt(id, 10));
+      if (t) Object.assign(t, payload);
+      close5W2HModal();
+      renderRncTable();
+      updateRncMetrics();
+      showToast('Plano 5W2H salvo!');
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['dashboard', 'tickets', 'audit', 'calc-v5', 'ranking', 'analytics', 'pdca', 'disputes', 'history'];
+      tabs.forEach(t => {
+        document.getElementById('view-' + t)?.classList.toggle('hidden', t !== tabId);
+        document.getElementById('tab-btn-' + t)?.classList.toggle('active', t === tabId);
+      });
+      if (tabId === 'tickets') fetchTickets();
+      if (tabId === 'ranking') renderRankingTable();
+    }
+
+    function renderRankingTable() {
+      const tbody = document.getElementById('ranking-table-body');
+      const filter = document.getElementById('ranking-filter-squad')?.value || 'ALL';
+      if (!tbody) return;
+
+      const filtered = TEAM_ROSTER.filter(a => filter === 'ALL' || a.leader === filter);
+      tbody.innerHTML = filtered.map((a, i) => `
+        <tr class="hover:bg-gray-50">
+          <td class="p-3 font-bold">${i + 1}. ${a.name}</td>
+          <td class="p-3">${a.leader}</td>
+          <td class="p-3">${a.audits}</td>
+          <td class="p-3 font-mono font-black text-amber-500">${a.avgScore.toFixed(1)}%</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-900">Aprovado</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function switchCalcSubtab(sub) {
+      document.getElementById('subtab-calc-audit').classList.toggle('hidden', sub !== 'audit');
+      document.getElementById('subtab-calc-grocery').classList.toggle('hidden', sub !== 'grocery');
+    }
+
+    function executarCalculosV5() {
+      const b5 = parseFloat(document.getElementById('v5-inputB5')?.value) || 0;
+      const c11 = parseFloat(document.getElementById('v5-inputC11')?.value) || 0;
+      const statusResumo = document.getElementById('v5-status-resumo');
+      if (c11 > 4 || (b5 < 15 && c11 > 0)) {
+        statusResumo.className = 'mt-4 p-3 rounded-xl border-2 border-black bg-red-100 text-red-900 font-black text-xs text-center';
+        statusResumo.innerText = '✗ REPROVADO NA AUDITORIA';
+      } else {
+        statusResumo.className = 'mt-4 p-3 rounded-xl border-2 border-black bg-green-100 text-green-900 font-black text-xs text-center';
+        statusResumo.innerText = '✓ MENU APROVADO PELA REGRA OFICIAL';
+      }
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      document.getElementById('theme-icon-light')?.classList.toggle('hidden', isDark);
+      document.getElementById('theme-icon-dark')?.classList.toggle('hidden', !isDark);
+      if (rncStatusChartInstance) renderRncCharts();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+    }
+
+    window.onload = function() {
+      const selAnalyst = document.getElementById('input-analyst');
+      if (selAnalyst) {
+        selAnalyst.innerHTML = TEAM_ROSTER.map(a => `<option value="${a.name}">${a.name} (${a.leader})</option>`).join('');
+      }
+      fetchTickets();
+      renderRankingTable();
+    };
+  </script>
+</body>
+</html>
