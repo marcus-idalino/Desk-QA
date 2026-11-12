@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Menu Enterprise - Central de Qualidade &amp; SOP 99Food</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2canvas CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandYellow: '#FFDD00',
+            brandYellowMed: '#FFB300',
+            brandMagenta: '#DF4F91',
+            brandBlack: '#121212',
+            brandOffWhite: '#F8F5EC',
+            brandSuccess: '#10B981',
+            brandError: '#F43F5E'
+          },
+          boxShadow: {
+            'brutal-sm': '2px 2px 0px 0px #121212',
+            'brutal': '4px 4px 0px 0px #121212',
+            'brutal-lg': '6px 6px 0px 0px #121212',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ========================================================
+       1. BASE & TRANSIÇÕES
+       ======================================================== */
+    * {
+      box-sizing: border-box;
+    }
+
+    body,
+    main,
+    header,
+    aside,
+    section,
+    .neo-card,
+    input,
+    select,
+    textarea,
+    button {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* ========================================================
+       2. MODO CLARO (BARRA LATERAL BRANCA + INPUTS PADRONIZADOS)
+       ======================================================== */
+    html:not(.dark) body,
+    html:not(.dark) main {
+      background-color: #FFDD00 !important;
+      background-image: radial-gradient(#D8BA00 1.5px, transparent 1.5px) !important;
+      background-size: 18px 18px !important;
+      color: #000000 !important;
+    }
+
+    html:not(.dark) aside {
+      background-color: #FFFFFF !important;
+      border-color: #000000 !important;
+    }
+
+    html:not(.dark) .sidebar-brand-box,
+    html:not(.dark) .sidebar-user-box {
+      background-color: #F4F4F6 !important;
+      border: 2px solid #000000 !important;
+      box-shadow: 2px 2px 0px #000000 !important;
+    }
+
+    html:not(.dark) .sidebar-title,
+    html:not(.dark) .sidebar-user-name {
+      color: #000000 !important;
+    }
+
+    html:not(.dark) .sidebar-input-btn {
+      background-color: #E5E7EB !important;
+      color: #000000 !important;
+      border: 1.5px solid #000000 !important;
+      box-shadow: 1px 1px 0px #000000 !important;
+    }
+
+    html:not(.dark) .sidebar-input-btn:hover,
+    html:not(.dark) .sidebar-input-btn.active-tab {
+      background-color: #2563EB !important;
+      color: #FFFFFF !important;
+      border-color: #000000 !important;
+      box-shadow: 2px 2px 0px #000000 !important;
+    }
+
+    html:not(.dark) .sidebar-input-btn:hover span,
+    html:not(.dark) .sidebar-input-btn.active-tab span {
+      color: #FFFFFF !important;
+    }
+
+    html:not(.dark) input,
+    html:not(.dark) select,
+    html:not(.dark) textarea {
+      background-color: #E5E7EB !important;
+      color: #000000 !important;
+      border: 2px solid #000000 !important;
+      border-radius: 8px !important;
+      font-weight: 700;
+    }
+
+    html:not(.dark) header {
+      background-color: #FFFFFF !important;
+      border-bottom: 2px solid #000000 !important;
+    }
+
+    html:not(.dark) header #topbar-section-title {
+      color: #000000 !important;
+    }
+
+    html:not(.dark) header #topbar-context-tag {
+      color: #4B5563 !important;
+    }
+
+    html:not(.dark) .main-card-container,
+    html:not(.dark) .neo-card,
+    html:not(.dark) .bg-\[\#1A1A1A\] {
+      background-color: #FFFFFF !important;
+      border: 3px solid #000000 !important;
+      box-shadow: 5px 5px 0px #000000 !important;
+      color: #000000 !important;
+      border-radius: 18px !important;
+    }
+
+    html:not(.dark) label,
+    html:not(.dark) .text-slate-400 {
+      color: #374151 !important;
+    }
+
+    /* ========================================================
+       3. MODO NOTURNO (BARRA LATERAL ESCURA + INPUTS GRAFITE)
+       ======================================================== */
+    html.dark body,
+    html.dark main {
+      background-color: #121214 !important;
+      background-image: radial-gradient(#26262B 1.5px, transparent 1.5px) !important;
+      background-size: 18px 18px !important;
+      color: #FFFFFF !important;
+    }
+
+    html.dark aside {
+      background-color: #101012 !important;
+      border-color: #27272A !important;
+    }
+
+    html.dark .sidebar-brand-box,
+    html.dark .sidebar-user-box {
+      background-color: #18181C !important;
+      border: 1.5px solid #27272A !important;
+    }
+
+    html.dark .sidebar-title,
+    html.dark .sidebar-user-name {
+      color: #FFFFFF !important;
+    }
+
+    html.dark .sidebar-input-btn {
+      background-color: #212124 !important;
+      color: #F4F4F5 !important;
+      border: 1.5px solid #3F3F46 !important;
+    }
+
+    html.dark .sidebar-input-btn:hover,
+    html.dark .sidebar-input-btn.active-tab {
+      background-color: #2563EB !important;
+      color: #FFFFFF !important;
+      border-color: #2563EB !important;
+    }
+
+    html.dark .sidebar-input-btn:hover span,
+    html.dark .sidebar-input-btn.active-tab span {
+      color: #FFFFFF !important;
+    }
+
+    html.dark input,
+    html.dark select,
+    html.dark textarea {
+      background-color: #212124 !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid #3F3F46 !important;
+      border-radius: 8px !important;
+      font-weight: 700;
+    }
+
+    html.dark header {
+      background-color: #1A1A1A !important;
+      border-bottom: 2px solid #000000 !important;
+    }
+
+    html.dark .main-card-container,
+    html.dark .neo-card,
+    html.dark .bg-\[\#1A1A1A\] {
+      background-color: #18181C !important;
+      border: 2px solid #2E2E36 !important;
+      box-shadow: 4px 4px 0px #000000 !important;
+      color: #FFFFFF !important;
+      border-radius: 18px !important;
+    }
+
+    html.dark label,
+    html.dark .text-slate-400 {
+      color: #94A3B8 !important;
+    }
+  </style>
+</head>
+
+<body class="bg-[#121212] text-[#F8F5EC] min-h-screen flex flex-col md:flex-row antialiased">
+
+  <!-- BARRA LATERAL COMPLETA -->
+  <aside class="w-64 h-screen flex flex-col justify-between p-3 shrink-0 border-r-2 transition-colors duration-200">
+
+    <!-- TOPO: LOGO & TÍTULO -->
+    <div class="sidebar-brand-box p-3 rounded-xl flex items-center gap-3 shrink-0 mb-2">
+      <div class="w-9 h-9 rounded-lg bg-[#FFDD00] text-black font-black flex items-center justify-center text-sm border-2 border-black shadow-[2px_2px_0px_#000000] shrink-0">
+        99
+      </div>
+      <div class="leading-tight">
+        <div class="flex items-center gap-1.5">
+          <span class="font-black text-xs uppercase tracking-wider sidebar-title">CENTRAL QA</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        </div>
+        <p class="text-[10px] font-bold text-yellow-500 uppercase tracking-tighter">99Food SOP Engine</p>
+      </div>
+    </div>
+
+    <!-- NAVEGAÇÃO: BOTÕES COM IDS E AÇÕES CORRETAS -->
+    <nav class="flex-1 flex flex-col justify-between py-1 my-auto overflow-hidden gap-1">
+
+      <!-- 1. Calculadora QA (calc-v5) -->
+      <button type="button" id="tab-btn-calc-v5" onclick="switchTab('calc-v5')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">🧮</span>
+          <span class="truncate">Calculadora QA</span>
+        </div>
+      </button>
+
+      <!-- 2. Ficha de Auditoria (audit) -->
+      <button type="button" id="tab-btn-audit" onclick="switchTab('audit')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer active-tab">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">📋</span>
+          <span class="truncate">Ficha de Auditoria</span>
+        </div>
+      </button>
+
+      <!-- 3. RNCs & Qualidade Lean (tickets) -->
+      <button type="button" id="tab-btn-tickets" onclick="switchTab('tickets')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">📋</span>
+          <span class="truncate">RNCs &amp; Qualidade Lean</span>
+        </div>
+        <span id="badge-sidebar-rnc" class="bg-[#FFDD00] text-black text-[10px] font-black px-1.5 py-0.5 rounded-full shrink-0">0</span>
+      </button>
+
+      <!-- 4. Painel Geral (dashboard) -->
+      <button type="button" id="tab-btn-dashboard" onclick="switchTab('dashboard')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">⊞</span>
+          <span class="truncate">Painel Geral</span>
+        </div>
+        <span class="bg-emerald-500/20 text-emerald-500 text-[10px] font-black px-1.5 py-0.5 rounded border border-emerald-500/40 shrink-0">Ao Vivo</span>
+      </button>
+
+      <!-- 5. Scorecard Equipe (ranking) -->
+      <button type="button" id="tab-btn-ranking" onclick="switchTab('ranking')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">👥</span>
+          <span class="truncate">Scorecard Equipe (30)</span>
+        </div>
+        <span class="bg-indigo-900/40 text-indigo-400 text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">4 Squads</span>
+      </button>
+
+      <!-- 6. Pareto & Métricas QA (analytics) -->
+      <button type="button" id="tab-btn-analytics" onclick="switchTab('analytics')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">📊</span>
+          <span class="truncate">Pareto &amp; Métricas QA</span>
+        </div>
+        <span class="bg-[#FFDD00] text-black text-[10px] font-black px-1.5 py-0.5 rounded shrink-0">80/20</span>
+      </button>
+
+      <!-- 7. Planos de Ação (pdca) -->
+      <button type="button" id="tab-btn-pdca" onclick="switchTab('pdca')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">🔄</span>
+          <span class="truncate">Planos de Ação (PDCA)</span>
+        </div>
+        <span class="bg-rose-900/60 text-rose-400 text-[10px] font-black px-2 py-0.5 rounded-full shrink-0">2</span>
+      </button>
+
+      <!-- 8. Contestações & Recurso (disputes) -->
+      <button type="button" id="tab-btn-disputes" onclick="switchTab('disputes')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">⇄</span>
+          <span class="truncate">Contestações &amp; Recurso</span>
+        </div>
+        <span class="bg-purple-900/60 text-purple-400 text-[10px] font-black px-2 py-0.5 rounded-full shrink-0">1</span>
+      </button>
+
+      <!-- 9. Histórico de Auditorias (history) -->
+      <button type="button" id="tab-btn-history" onclick="switchTab('history')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">🕒</span>
+          <span class="truncate">Histórico de Auditorias</span>
+        </div>
+        <span class="bg-slate-700 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">0</span>
+      </button>
+
+      <!-- 10. Calculadora SOP & Amostra (calc) -->
+      <button type="button" id="tab-btn-calc" onclick="switchTab('calc')"
+        class="sidebar-input-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer">
+        <div class="flex items-center gap-2 truncate">
+          <span class="text-sm">📑</span>
+          <span class="truncate">Calculadora SOP &amp; Amostra</span>
+        </div>
+      </button>
+
+    </nav>
+
+    <!-- RODAPÉ: PERFIL DO AUDITOR -->
+    <div class="sidebar-user-box p-2.5 rounded-xl flex items-center gap-3 shrink-0 mt-2">
+      <div class="w-8 h-8 rounded-lg bg-[#FFDD00] text-black font-black flex items-center justify-center text-xs border border-black shrink-0">
+        MV
+      </div>
+      <div class="leading-tight truncate">
+        <span class="font-black text-xs block truncate sidebar-user-name">Marcus Vinicius</span>
+        <span class="text-[10px] font-bold text-yellow-500">Auditor QA</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ÁREA PRINCIPAL DE CONTEÚDO -->
+  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#121212]">
+
+    <!-- Topbar Superior -->
+    <header class="h-14 border-b-2 border-black bg-[#1A1A1A] px-6 flex items-center justify-between shrink-0">
+
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="text-slate-100 font-black text-xs uppercase flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full border border-black inline-block" style="background-color: #FFDD00;"></span>
+          <span id="topbar-section-title">FICHA DE AUDITORIA DO MENU (SOP OFICIAL)</span>
+        </span>
+        <span class="text-slate-600">/</span>
+        <span class="font-bold text-slate-400 font-mono text-[11px]" id="topbar-context-tag">Monitoramento de Qualidade 99Food</span>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button type="button" onclick="openNewRncModal()"
+          class="text-xs py-1.5 px-3 flex items-center gap-1.5 font-black text-black border-2 border-black shadow-[2px_2px_0px_#000000] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+          style="background-color: #FFDD00;">
+          <span>+ Nova RNC</span>
+        </button>
+
+        <button type="button" onclick="iniciarNovaAuditoria()"
+          class="text-xs py-1.5 px-3 flex items-center gap-1.5 font-bold text-white border-2 border-black shadow-[2px_2px_0px_#000000] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+          style="background-color: #2563EB;">
+          <span>Nova Auditoria</span>
+        </button>
+
+        <a href="#" target="_blank"
+          class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-black transition-colors">
+          Regras Oficial SOP
+        </a>
+
+        <button type="button" onclick="alternarTema()" id="btn-theme-toggle" title="Alternar Tema Claro/Escuro"
+          class="text-xs p-1.5 px-2.5 flex items-center justify-center font-bold text-white bg-slate-800 hover:bg-slate-700 border-2 border-black shadow-[2px_2px_0px_#000000] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer">
+          <svg id="icon-sun" class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg id="icon-moon" class="w-4 h-4 text-slate-900 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- ÚNICO Conteúdo Scrollável de todo o sistema -->
+    <div class="flex-1 overflow-y-auto p-4 pt-2">
+
+      <!-- ====================================================
+           VIEW: FICHA DE AUDITORIA (audit)
+      ==================================================== -->
+      <section id="view-audit" class="main-card-container space-y-4 max-w-6xl mx-auto p-6 my-6">
+
+        <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-brutal-sm">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded bg-[#FFDD00] text-black font-black text-xs uppercase border border-black shadow-brutal-sm">
+              SOP 99Food
+            </span>
+            <div>
+              <h2 class="text-sm font-black text-white uppercase tracking-wider">Ficha de Inspeção de Processo &amp; Qualidade</h2>
+              <p class="text-[11px] text-slate-400 font-bold">Auditoria Contínua de Cardápios • Regras de Tolerância &amp; FMEA</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block">
+              <span class="text-[10px] font-black uppercase text-slate-400 block">Status da Auditoria</span>
+              <span id="audit-status-badge" class="text-xs font-bold text-emerald-400">Em Preenchimento</span>
+            </div>
+            <div class="w-28 bg-slate-800 h-2.5 rounded-full overflow-hidden border border-black">
+              <div id="audit-progress-bar" class="bg-[#FFDD00] h-full transition-all duration-300" style="width: 15%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRADE PRINCIPAL -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+
+          <div class="lg:col-span-3 space-y-4">
+
+            <!-- ETAPA 1: RASTREABILIDADE & FONTE DA SOP -->
+            <div class="neo-card p-4 space-y-3 border-2 border-black bg-[#1A1A1A]">
+              <div class="border-b-2 border-black pb-2 flex items-center justify-between">
+                <h3 class="text-xs font-black uppercase text-slate-100 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded bg-[#FFDD00] text-black border border-black flex items-center justify-center text-[10px] font-black">1</span>
+                  <span>ELEGIBILIDADE &amp; RASTREABILIDADE DA FONTE</span>
+                </h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 border border-black text-slate-300">Dados da Tarefa</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Shop ID (Restaurante)*</label>
+                  <input type="text" id="input-shopId" value="5764616735802789885" class="neo-input w-full p-2 font-mono text-xs">
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">ID da Tarefa / Task System*</label>
+                  <input type="text" id="input-systemId" value="5764612956585921143" class="neo-input w-full p-2 font-mono text-xs">
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Criador da Tarefa*</label>
+                  <input type="text" id="input-criador" value="System:0" class="neo-input w-full p-2 font-mono text-xs">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+                <div class="md:col-span-2">
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Analista HRO Auditado(a)*</label>
+                  <select id="input-analyst" onchange="onAnalystSelectChange()" class="neo-input w-full p-2 font-bold text-xs">
+                    <!-- Povoado via JS -->
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Tenure Bucket</label>
+                  <select id="input-tenure" class="neo-input w-full p-2 font-bold text-xs">
+                    <option selected>Acima de 180 dias</option>
+                    <option>90 a 180 dias</option>
+                    <option>30 a 90 dias</option>
+                    <option>Menos de 30 dias</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Líder Supervisor</label>
+                  <input type="text" id="input-leader" value="Paulo Silva" readonly class="neo-input w-full p-2 font-bold text-xs bg-slate-900 border-dashed text-slate-400">
+                </div>
+              </div>
+
+              <!-- Validação de Fonte SOP -->
+              <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg space-y-2">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                  <div>
+                    <label class="block text-slate-400 font-bold mb-1 text-[11px]">A fonte é um link do iFood?*</label>
+                    <select id="field-fonte-ifood" onchange="runAutoValidation()" class="neo-input w-full p-2 text-xs font-bold">
+                      <option value="nao" selected>Não, é fonte oficial</option>
+                      <option value="sim">Sim, é iFood (Link Invalidador)</option>
+                    </select>
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="block text-slate-400 font-bold mb-1 text-[11px]">Validação da Fonte de Origem*</label>
+                    <select id="field-validacao-fonte" onchange="runAutoValidation()" class="neo-input w-full p-2 text-xs font-bold">
+                      <option value="valida" selected>Fonte VÁLIDA (Foto, PDF, Cardápio Oficial) • Aprovado</option>
+                      <option value="proibida">Fonte PROIBIDA (Keeta, Rappi, Redes Sociais) • CRITICAL FAIL</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BLOCO DE DIAGNÓSTICO PROFUNDO RCA -->
+            <div id="bloco-rca-profundo" class="hidden neo-card p-4 space-y-3 border-l-4 border-l-rose-500 bg-[#1A1A1A]">
+              <div class="border-b-2 border-black pb-2 flex items-center justify-between">
+                <h3 class="text-xs font-black uppercase text-rose-400 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded bg-rose-600 text-white flex items-center justify-center text-[10px] font-black">RCA</span>
+                  <span>DIAGNÓSTICO PROFUNDO DE INCONFORMIDADE (ANÁLISE DE CAUSA RAIZ)</span>
+                </h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">Obrigatório p/ Reprovação</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-300 font-bold mb-1 text-[11px]">FOS do Erro (Ação do Analista)*</label>
+                  <select id="rca-fos-erro" class="neo-input w-full p-2 font-bold text-xs border-rose-900">
+                    <option value="" disabled selected>Selecione a ação incorreta...</option>
+                    <option value="Criou o Menu Incorretamente">Criou o Menu Incorretamente</option>
+                    <option value="Negou a Tarefa Incorretamente">Negou a Tarefa Incorretamente</option>
+                    <option value="Concluiu sem Replicar o Menu">Concluiu sem Replicar o Menu</option>
+                    <option value="Aprovou Fonte Proibida">Aprovou Fonte Proibida</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-300 font-bold mb-1 text-[11px]">Motivo do Erro (Tag SOP)*</label>
+                  <select id="rca-motivo-tecnico" class="neo-input w-full p-2 font-bold text-xs border-rose-900 truncate">
+                    <option value="" disabled selected>Selecione a regra descumprida...</option>
+                    <option value="[ VALIDAÇÃO DA FONTE DO MENU - Fonte inválida ]">[ VALIDAÇÃO DA FONTE DO MENU - Fonte inválida ]</option>
+                    <option value="[ >= 90% DOS ITENS PRESENTES NO MENU ]">[ >= 90% DOS ITENS PRESENTES NO MENU ]</option>
+                    <option value="[ GRUPOS MODIFICADORES DIFEREM DA FONTE ]">[ GRUPOS MODIFICADORES DIFEREM DA FONTE ]</option>
+                    <option value="[ DIVERGÊNCIA DE PREÇOS NO MENU ]">[ DIVERGÊNCIA DE PREÇOS NO MENU ]</option>
+                    <option value="[ O MENU NÃO FOI MARCADO COMO DISPONÍVEL NO 99ADMIN ]">[ O MENU NÃO FOI MARCADO COMO DISPONÍVEL NO 99ADMIN ]</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-slate-300 font-bold mb-1 text-[11px]">RCA (Causa Raiz Operacional)*</label>
+                  <select id="rca-causa-operacional" class="neo-input w-full p-2 font-bold text-xs border-rose-900">
+                    <option value="" disabled selected>Selecione a causa raiz...</option>
+                    <option value="Erro por rapidez / falta de atenção">Erro por rapidez / falta de atenção</option>
+                    <option value="Falta de conhecimento da SOP">Falta de conhecimento da SOP</option>
+                    <option value="Falha / Bug no Sistema (Gattaran)">Falha / Bug no Sistema (Gattaran)</option>
+                    <option value="Fonte Original Ambígua / Ilegível">Fonte Original Ambígua / Ilegível</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Houve Alteração na Fonte Externa?</label>
+                  <select id="rca-alteracao-fonte" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="Não" selected>Não / Indiferente</option>
+                    <option value="Sim - Alteração Posterior">Sim - Alteração posterior no link/fonte</option>
+                  </select>
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Observação Técnica da Inconformidade</label>
+                  <input type="text" id="rca-observacao" placeholder="Ex: Analista não cadastrou o grupo de bebidas que constava no PDF fonte..." class="neo-input w-full p-2 text-xs">
+                </div>
+              </div>
+            </div>
+
+            <!-- ETAPA 2: REGRAS DOS 90% & TOLERÂNCIAS SOP -->
+            <div class="neo-card p-4 space-y-3 border-2 border-black bg-[#1A1A1A]">
+              <div class="border-b-2 border-black pb-2 flex items-center justify-between">
+                <h3 class="text-xs font-black uppercase text-slate-100 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded bg-[#DF4F91] text-white border border-black flex items-center justify-center text-[10px] font-black">2</span>
+                  <span>CONFERÊNCIA QUANTITATIVA &amp; TOLERÂNCIAS DE ERRO</span>
+                </h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-pink-950 text-pink-300 border border-pink-500">Régua 90% SOP</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Total itens (sem modificadores)*</label>
+                  <input type="number" id="num-itens-sem-mod" value="40" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm">
+                  <span class="text-[10px] text-slate-500 block mt-0.5">Calcula regra &lt;15 itens</span>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Total itens (com modificadores)*</label>
+                  <input type="number" id="num-itens-com-mod" value="66" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm">
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Itens c/ imagem na fonte*</label>
+                  <input type="number" id="num-img-fonte" value="37" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Itens criados SEM imagens*</label>
+                  <input type="number" id="num-itens-sem-img" value="0" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm">
+                </div>
+                <div>
+                  <label class="block text-rose-400 font-bold mb-1 text-[11px]">Itens com preço incorreto*</label>
+                  <input type="number" id="num-precos-errados" value="0" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm text-rose-400">
+                  <span class="text-[10px] text-rose-400/80 block mt-0.5">Impacta severidade FMEA</span>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Grupos modificadores divergentes*</label>
+                  <input type="number" id="num-grupos-mod-dif" value="0" oninput="runAutoValidation()" class="neo-input w-full p-2 text-center font-black text-sm">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% dos itens no menu?*</label>
+                  <select id="chk-itens-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% modificadores corretos?*</label>
+                  <select id="chk-mod-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% itens sem duplicidade?*</label>
+                  <select id="chk-unicos-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% imagens corretas?*</label>
+                  <select id="chk-img-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% preços corretos?*</label>
+                  <select id="chk-preco-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% nomes corretos?*</label>
+                  <select id="chk-nome-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">≥ 90% descrições corretas?*</label>
+                  <select id="chk-desc-90" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="sim" selected>Sim (Conforme)</option>
+                    <option value="nao">Não (Não Conforme)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Criação min. 10% itens genéricos?*</label>
+                  <select id="chk-genericos" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="nao" selected>Sem falha nesta regra</option>
+                    <option value="sim">Houve falha em itens genéricos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- ETAPA 3: REGRA DE CORTE (15 ITENS) & CLASSIFICAÇÃO QUALITATIVA A/B/C -->
+            <div class="neo-card p-4 space-y-3 border-2 border-black bg-[#1A1A1A]">
+              <div class="border-b-2 border-black pb-2 flex items-center justify-between">
+                <h3 class="text-xs font-black uppercase text-slate-100 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded bg-emerald-600 text-white border border-black flex items-center justify-center text-[10px] font-black">3</span>
+                  <span>CLASSIFICAÇÃO QUALITATIVA (A/B/C) &amp; FECHAMENTO</span>
+                </h3>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500">Maturidade SOP</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Qualidade: Itens*</label>
+                  <select id="grade-itens" onchange="runAutoValidation()" class="neo-input w-full p-2 font-black text-xs">
+                    <option value="A" selected>(A) Alta Qualidade</option>
+                    <option value="B">(B) Média Qualidade</option>
+                    <option value="C">(C) Baixa Qualidade</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Qualidade: Modificadores*</label>
+                  <select id="grade-modificadores" onchange="runAutoValidation()" class="neo-input w-full p-2 font-black text-xs">
+                    <option value="A" selected>(A) Alta Qualidade</option>
+                    <option value="B">(B) Média Qualidade</option>
+                    <option value="C">(C) Baixa Qualidade</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Qualidade: Preço*</label>
+                  <select id="grade-preco" onchange="runAutoValidation()" class="neo-input w-full p-2 font-black text-xs">
+                    <option value="A">(A) Alta Qualidade</option>
+                    <option value="B" selected>(B) Média Qualidade</option>
+                    <option value="C">(C) Baixa Qualidade</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Qualidade: Imagens*</label>
+                  <select id="grade-imagens" onchange="runAutoValidation()" class="neo-input w-full p-2 font-black text-xs">
+                    <option value="A" selected>(A) Alta Qualidade</option>
+                    <option value="B">(B) Média Qualidade</option>
+                    <option value="C">(C) Baixa Qualidade</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-2 border-t border-slate-800">
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Segue estrutura padrão?*</label>
+                  <select id="field-estrutura-padrao" class="neo-input w-full p-2 font-bold text-xs">
+                    <option selected>Sim, segue o padrão</option>
+                    <option>Não segue o padrão</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Falha em porcentagens?*</label>
+                  <select id="field-falhas-porcentagem" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="nao" selected>Não</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Erros somam &gt; 10% do menu?*</label>
+                  <select id="field-erros-10-pct" onchange="runAutoValidation()" class="neo-input w-full p-2 font-bold text-xs">
+                    <option value="nao" selected>Não</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-xs">
+                <div class="md:col-span-2">
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Resultado Final Calculado*</label>
+                  <select id="audit-final-result" class="neo-input w-full p-2 font-black text-xs">
+                    <option value="Aprovado" selected>Aprovado</option>
+                    <option value="Aprovado com Feedback">Aprovado com Feedback</option>
+                    <option value="Não Aprovado">Não Aprovado</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-400 font-bold mb-1 text-[11px]">Caso Revisado?</label>
+                  <select id="field-caso-revisado" class="neo-input w-full p-2 font-bold text-xs">
+                    <option selected>-</option>
+                    <option>Sim</option>
+                    <option>Não</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- COLUNA LATERAL: SCORECARD & ISHIKAWA 6M -->
+          <div class="neo-card p-4 flex flex-col justify-between space-y-4 sticky top-4 self-start border-2 border-black bg-[#1A1A1A] shadow-brutal-sm">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b-2 border-black mb-3">
+                <h3 class="text-xs font-black uppercase text-slate-200">MEDIDOR QA (99FOOD)</h3>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+              </div>
+
+              <div class="text-center p-3.5 rounded-xl bg-[#05080E] border-2 border-black mb-3">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block">QUALITY SCORE</span>
+                <div class="text-4xl font-black text-emerald-400 my-1 font-mono" id="display-score">100.0%</div>
+                <p class="text-[11px] font-bold text-slate-300" id="display-score-label">Classificação: Alta Qualidade (Aprovado)</p>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden border border-black">
+                  <div id="display-score-bar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="space-y-2 mb-3" id="sop-alerts-container">
+                <div class="p-2.5 rounded-lg border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 text-[11px] font-black flex items-center space-x-2">
+                  <span>✓</span>
+                  <span>Cardápio 100% conforme SOP</span>
+                </div>
+              </div>
+
+              <div id="bloco-ishikawa" class="hidden mb-3 p-3 border-2 border-rose-900 bg-rose-950/20 rounded-xl">
+                <label class="block text-rose-300 text-[10px] uppercase font-black mb-1">Causa Raiz 6M (Obrigatório)*</label>
+                <select id="audit-causa-raiz" class="neo-input w-full p-2 text-xs font-bold border-rose-900">
+                  <option value="" disabled selected>Selecione a origem...</option>
+                  <option value="Mão de Obra">Mão de Obra (Desatenção / Treinamento)</option>
+                  <option value="Método">Método (Dúvida / Ambiguidade na SOP)</option>
+                  <option value="Máquina">Máquina (Bug no Gattaran / System)</option>
+                  <option value="Material">Material (Fonte Incompleta / Ilegível)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-400 text-[11px] mb-1 font-bold">Feedback / Orientação do Auditor</label>
+                <textarea id="audit-feedback" rows="3" class="neo-input w-full p-2 text-xs" placeholder="Apontamentos para alinhamento com o analista HRO..."></textarea>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+              <button type="button" onclick="submitAuditForm()"
+                class="w-full py-2.5 px-3 text-xs flex items-center justify-center space-x-2 font-bold text-white border-2 border-black shadow-[2px_2px_0px_#000000] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                style="background-color: #2563EB;">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Finalizar Auditoria &amp; Emitir PDCA</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================
+           VIEW: CALCULADORA UNIFICADA (calc-v5)
+      ==================================================== -->
+      <section id="view-calc-v5" class="hidden main-card-container space-y-6 max-w-6xl mx-auto p-6 my-6">
+
+        <div class="neo-card p-5 bg-[#1A1A1A] flex flex-col md:flex-row md:items-center justify-between gap-4 border-2 border-black">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-md bg-[#FFDD00] text-black text-[11px] font-black uppercase border border-black">Calculadora QA Oficial</span>
+              <span class="text-xs font-bold text-slate-400">• Manual Operacional 99Food</span>
+            </div>
+            <h2 class="text-lg font-black text-white uppercase tracking-tight">Calculadora de Auditoria de Cardápios &amp; Grocery</h2>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex bg-slate-950 p-1 rounded-xl border-2 border-black">
+              <button type="button" onclick="switchCalcSubtab('audit')" id="btn-calcsub-audit"
+                class="px-3.5 py-1.5 rounded-lg font-black text-xs bg-[#FFDD00] text-black shadow-brutal-sm">
+                Auditoria de Cardápio
+              </button>
+              <button type="button" onclick="switchCalcSubtab('grocery')" id="btn-calcsub-grocery"
+                class="px-3.5 py-1.5 rounded-lg font-black text-xs text-slate-400 hover:text-white">
+                Calculadora Grocery
+              </button>
+            </div>
+
+            <button type="button" onclick="resetarPlanilhaV5()"
+              class="px-3 py-1.5 rounded-xl border-2 border-black bg-rose-900/40 hover:bg-rose-900/60 text-rose-200 font-black text-xs shadow-brutal-sm">
+              Resetar
+            </button>
+          </div>
+        </div>
+
+        <!-- SUB-ABA 1: AUDITORIA DE CARDÁPIO V5.5 -->
+        <div id="subtab-calc-audit" class="space-y-6">
+
+          <div id="card-resultado-v5" class="neo-card p-5 bg-slate-950 border-2 border-black transition-all">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div id="icon-resultado-v5" class="w-12 h-12 rounded-xl bg-slate-800 border-2 border-black flex items-center justify-center text-xl shrink-0 font-black">
+                  ℹ️
+                </div>
+                <div>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block">Resultado Final da Auditoria (Regra Oficial de Corte)</span>
+                  <h3 id="texto-status-v5" class="text-xl font-black text-white">Aguardando preenchimento da FONTE...</h3>
+                </div>
+              </div>
+              <div id="badge-resultado-v5" class="px-4 py-1.5 rounded-xl font-black text-xs uppercase border-2 border-black bg-slate-800 text-slate-300 shadow-brutal-sm">
+                Pendente
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-slate-800 text-xs font-bold text-slate-400" id="detalhes-regra-v5">
+              Preencha os campos para calcular a tolerância de erros.
+            </div>
+          </div>
+
+          <div class="neo-card overflow-hidden">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-black text-white font-black text-[11px] uppercase tracking-wider border-b-2 border-black">
+                  <th class="py-3 px-3.5">ITEM / CATEGORIA</th>
+                  <th class="py-3 px-2 text-center w-28">FONTE</th>
+                  <th class="py-3 px-2 text-center w-36">Não vendidos separadamente</th>
+                  <th class="py-3 px-2 text-center w-32">Qnt. com Erro</th>
+                  <th class="py-3 px-2 text-center w-24">% ERRO</th>
+                  <th class="py-3 px-2 text-center w-28">STATUS</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 bg-[#0D131F] text-slate-200 font-semibold">
+                <tr class="bg-slate-950 font-black">
+                  <td class="py-2.5 px-3.5">Itens (Sem Modificadores) - Gattaran</td>
+                  <td class="py-2 px-2">
+                    <input type="number" id="inputB5" min="0" placeholder="0" oninput="lidarComB5V5()" class="neo-input w-full p-1.5 text-center font-black">
+                  </td>
+                  <td class="py-2 px-2">
+                    <input type="number" id="inputNaoVendidos" min="0" placeholder="0" oninput="lidarComNaoVendidosV5()" class="neo-input w-full p-1.5 text-center font-black bg-amber-950/40 text-amber-300" title="Subtrai da fonte de Itens Sem Modificadores">
+                  </td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Imagens</td>
+                  <td class="py-2 px-2"><input type="number" id="inputB6" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center"></td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC6" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC6', 'Imagens')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD6" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE6" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Descritivos</td>
+                  <td class="py-2 px-2"><input type="number" id="inputB7" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center"></td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC7" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC7', 'Descritivos')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD7" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE7" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Itens Faltantes</td>
+                  <td class="py-2 px-2 text-center text-slate-500 italic font-mono">[B5_efetivo]</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC8" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC8', 'Itens Faltantes')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD8" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE8" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Itens Genéricos (SOP 99Food)</td>
+                  <td class="py-2 px-2 text-center text-slate-500 italic font-mono">[B5_efetivo]</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputCGenericos" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputCGenericos', 'Itens Genéricos')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputDGenericos" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeEGenericos" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Itens Duplicados</td>
+                  <td class="py-2 px-2 text-center text-slate-500 italic font-mono">[B5_efetivo]</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC9" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC9', 'Itens Duplicados')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD9" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE9" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Nomes com Erro</td>
+                  <td class="py-2 px-2 text-center text-slate-500 italic font-mono">[B5_efetivo]</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC10" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC10', 'Nomes com Erro')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD10" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE10" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Preço Errado</td>
+                  <td class="py-2 px-2 text-center text-slate-500 italic font-mono">[B5_efetivo]</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC11" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC11', 'Preço errado')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD11" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE11" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+
+                <tr class="bg-slate-950 font-black">
+                  <td class="py-2 px-3.5">
+                    <div class="leading-tight">
+                      <span>Grupo de Itens (Modificadores)*</span>
+                      <span class="text-[10px] block text-amber-400 font-bold">Alimenta B13 (B5_efetivo + Grupo)</span>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2">
+                    <div class="space-y-1">
+                      <input type="number" id="inputGrupoModificadores" min="0" placeholder="0" oninput="lidarComGrupoModV5()" class="neo-input w-full p-1.5 text-center bg-slate-900 border-amber-500 font-black">
+                      <input type="number" id="inputB13" readonly placeholder="B13" class="neo-input w-full p-1 text-center bg-slate-800 text-[11px] font-bold cursor-not-allowed">
+                    </div>
+                  </td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                </tr>
+
+                <tr>
+                  <td class="py-2 px-3.5">Modificadores</td>
+                  <td class="py-2 px-2"><input type="number" id="inputB14" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center font-bold"></td>
+                  <td class="py-2 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <div class="flex items-center gap-1 justify-center">
+                      <input type="number" id="inputC14" min="0" placeholder="0" oninput="executarCalculosV5()" class="neo-input w-full p-1.5 text-center">
+                      <button type="button" onclick="abrirModalItensErroV5('inputC14', 'Modificadores')" class="p-1 rounded bg-slate-800 border border-slate-700 text-xs hover:border-white">📋</button>
+                    </div>
+                  </td>
+                  <td class="py-2 px-2"><input type="text" id="inputD14" readonly class="neo-input w-full p-1.5 text-center bg-slate-950 font-mono"></td>
+                  <td class="py-2 px-2 text-center"><span id="badgeE14" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span></td>
+                </tr>
+              </tbody>
+
+              <tfoot>
+                <tr class="bg-black text-white font-black border-t-2 border-black">
+                  <td class="py-3 px-3.5 uppercase text-[#FFDD00]">% MENU INCORRETO ACUMULADO</td>
+                  <td class="py-3 px-2 text-center text-slate-600">-</td>
+                  <td class="py-3 px-2 text-center text-slate-600">-</td>
+                  <td class="py-2 px-2">
+                    <input type="number" id="inputC16" readonly class="neo-input w-full p-1.5 text-center bg-slate-900 text-[#FFDD00] font-mono font-black" placeholder="0">
+                  </td>
+                  <td class="py-2 px-2">
+                    <input type="text" id="inputD16" readonly class="neo-input w-full p-1.5 text-center bg-slate-900 text-amber-400 font-mono font-black" placeholder="0.00%">
+                  </td>
+                  <td class="py-2 px-2 text-center">
+                    <span id="badgeE16" class="px-2 py-0.5 rounded font-black text-[10px] hidden"></span>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-bold">
+            <div id="v5-alerta-regra" class="p-3.5 rounded-xl border-2 border-black bg-slate-950 shadow-brutal-sm flex flex-col justify-between">
+              <div>
+                <span class="text-[#FFDD00] uppercase font-black text-[10px] block mb-1">Regra Oficial de Tolerância</span>
+                <p id="v5-alerta-texto" class="text-[11px] leading-tight text-slate-300">
+                  Informe os <strong>Itens Sem Modificadores</strong> para calcular o corte de 15 itens.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl border-2 border-black bg-[#1A1A1A] shadow-brutal-sm text-center">
+              <span class="text-[10px] uppercase font-black text-slate-400 block mb-1">Máx. Erros sem Modificadores (H5)</span>
+              <input type="text" id="inputH5" readonly class="neo-input w-full p-2 text-center font-mono font-black text-lg bg-slate-950">
+              <span class="text-[9px] text-slate-500 font-mono mt-1 block">Fórmula: B5_efetivo × 6</span>
+            </div>
+
+            <div class="p-3.5 rounded-xl border-2 border-black bg-[#1A1A1A] shadow-brutal-sm text-center">
+              <span class="text-[10px] uppercase font-black text-slate-400 block mb-1">Máx. Erros com Modificadores (H13)</span>
+              <input type="text" id="inputH13" readonly class="neo-input w-full p-2 text-center font-mono font-black text-lg bg-slate-950">
+              <span class="text-[9px] text-slate-500 font-mono mt-1 block">Fórmula: (B13 - B5_efetivo) × 5</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SUB-ABA 2: CALCULADORA GROCERY -->
+        <div id="subtab-calc-grocery" class="hidden space-y-6">
+          <div id="card-grocery-v5" class="neo-card p-5 bg-slate-950 border-2 border-black transition-all">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-slate-800 border-2 border-black flex items-center justify-center text-xl shrink-0 font-black">🛒</div>
+                <div>
+                  <span class="text-[10px] font-black uppercase text-slate-400 block">Conformidade Grocery Store</span>
+                  <h3 id="texto-status-grocery-v5" class="text-xl font-black text-white">Aguardando inserção dos itens...</h3>
+                </div>
+              </div>
+              <div id="badge-grocery-v5" class="px-4 py-1.5 rounded-xl font-black text-xs uppercase border-2 border-black bg-slate-800 text-slate-300 shadow-brutal-sm">
+                Pendente
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7 neo-card p-6 space-y-6">
+              <div class="p-4 rounded-xl border-2 border-black bg-slate-950 space-y-3">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-black uppercase text-slate-300">Total de Itens Principais (total-input)</label>
+                  <input type="number" id="total-input" min="0" max="500" value="50" oninput="sincronizarGroceryInputV5('total')" class="neo-input w-20 p-1.5 text-center font-mono font-black text-sm">
+                </div>
+                <input type="range" id="total-slider" min="0" max="500" value="50" oninput="sincronizarGrocerySliderV5('total')" class="w-full accent-[#FFDD00] cursor-pointer">
+              </div>
+
+              <div class="p-4 rounded-xl border-2 border-black bg-slate-950 space-y-3">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-black uppercase text-slate-300">Comida Preparada / Manipulada (prepared-input)</label>
+                  <input type="number" id="prepared-input" min="0" max="500" value="18" oninput="sincronizarGroceryInputV5('prep')" class="neo-input w-20 p-1.5 text-center font-mono font-black text-sm">
+                </div>
+                <input type="range" id="prepared-slider" min="0" max="500" value="18" oninput="sincronizarGrocerySliderV5('prep')" class="w-full accent-[#FFDD00] cursor-pointer">
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 neo-card p-6 flex flex-col justify-between space-y-6">
+              <div class="flex flex-col items-center justify-center py-4 relative">
+                <div class="relative w-40 h-40">
+                  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" stroke="#1E293B" stroke-width="10" fill="transparent" />
+                    <circle id="v5-grocery-circle" cx="50" cy="50" r="40" stroke="#10b981" stroke-width="10" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="160" stroke-linecap="round" class="transition-all duration-300" />
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span class="text-[9px] font-black uppercase text-slate-400">Preparado</span>
+                    <span id="v5-grocery-percentage-badge" class="text-2xl font-black font-mono my-0.5">36.0%</span>
+                    <span id="v5-grocery-ratio-badge" class="text-[10px] font-black font-mono px-2 py-0.5 rounded-full bg-[#FFDD00] text-black">18 / 50</span>
+                  </div>
+                </div>
+              </div>
+              <div id="v5-grocery-decision-box" class="p-3.5 rounded-xl border-2 border-black bg-emerald-950/60 text-emerald-300 text-xs font-black text-center">
+                ✓ MENU APROVADO PELA REGRA GROCERY (≥ 30%)
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ====================================================
+           OUTRAS VIEWS
+      ==================================================== -->
+      <section id="view-dashboard" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5 border-2 border-black">
+          <h2 class="text-lg font-black text-white uppercase">Painel de Controle e Qualidade do Menu</h2>
+        </div>
+      </section>
+
+      <section id="view-tickets" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-5 border-2 border-black flex justify-between items-center">
+          <h2 class="text-lg font-black text-white uppercase">Gestão de RNCs &amp; Qualidade Lean</h2>
+          <button type="button" onclick="openNewRncModal()" class="px-3.5 py-2 text-xs font-black bg-[#FFDD00] text-black border-2 border-black shadow-brutal-sm">+ Nova RNC</button>
+        </div>
+        <div class="neo-card overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-black text-slate-400">
+              <tr>
+                <th class="p-3">ID</th>
+                <th class="p-3">Título</th>
+                <th class="p-3">Severidade</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="rnc-table-body" class="divide-y divide-slate-800 bg-[#0D131F]"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-ranking" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-black text-slate-400">
+              <tr>
+                <th class="p-3">Analista</th>
+                <th class="p-3">Líder</th>
+                <th class="p-3">Unidade</th>
+                <th class="p-3">Auditorias</th>
+                <th class="p-3">Score QA</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-table-body" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ABA PDCA -->
+      <section id="view-pdca" class="hidden main-card-container space-y-4 max-w-6xl mx-auto p-6 my-6">
+
+        <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-brutal-sm">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded bg-[#DF4F91] text-white font-black text-xs uppercase border border-black shadow-brutal-sm">
+              Ciclo PDCA &amp; SGQ
+            </span>
+            <div>
+              <h2 class="text-sm font-black text-white uppercase tracking-wider">Tratativa de Não Conformidades (RNC) &amp; 5W2H</h2>
+              <p class="text-[11px] text-slate-400 font-bold">Resolução de Causa Raiz • Planos de Ação Operacionais</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs">
+            <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center min-w-[80px]">
+              <span class="text-[9px] font-black text-slate-400 uppercase block">Total RNCs</span>
+              <span id="pdca-count-total" class="font-mono font-black text-white text-sm">0</span>
+            </div>
+            <div class="p-2 rounded bg-rose-950/60 border border-rose-800 text-center min-w-[80px]">
+              <span class="text-[9px] font-black text-rose-300 uppercase block">Em Aberto</span>
+              <span id="pdca-count-open" class="font-mono font-black text-rose-400 text-sm">0</span>
+            </div>
+            <div class="p-2 rounded bg-emerald-950/60 border border-emerald-800 text-center min-w-[80px]">
+              <span class="text-[9px] font-black text-emerald-300 uppercase block">Concluídas</span>
+              <span id="pdca-count-done" class="font-mono font-black text-emerald-400 text-sm">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 space-y-4">
+            <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black">
+              <div class="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
+                <h3 class="text-xs font-black uppercase text-slate-200 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                  <span>Registros de Não Conformidade (RNC)</span>
+                </h3>
+                <span class="text-[10px] text-slate-400 font-bold">Selecione uma RNC para estruturar o 5W2H</span>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                  <thead class="bg-slate-900 text-slate-400 font-black uppercase text-[10px] border-b border-slate-800">
+                    <tr>
+                      <th class="p-2.5">ID / Origem</th>
+                      <th class="p-2.5">Inconformidade / Motivo Técnico</th>
+                      <th class="p-2.5">Severidade</th>
+                      <th class="p-2.5">Status</th>
+                      <th class="p-2.5 text-center">Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rnc-table-body-pdca" class="divide-y divide-slate-800 font-medium"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black sticky top-4">
+              <div class="flex items-center justify-between pb-3 border-b-2 border-black mb-3">
+                <h3 class="text-xs font-black uppercase text-[#FFDD00]">Plano de Ação 5W2H</h3>
+                <span id="5w2h-rnc-badge" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-800 text-slate-300 rounded">RNC #-</span>
+              </div>
+
+              <form id="form-5w2h" onsubmit="salvarPlano5W2H(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="5w2h-rnc-id" value="">
+
+                <div>
+                  <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">1. What (O que será feito?)*</label>
+                  <input type="text" id="5w2h-what" required placeholder="Ex: Reciclagem individual sobre regra de fotos..." class="neo-input w-full p-2 text-xs">
+                </div>
+
+                <div>
+                  <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">2. Why (Por que será feito?)*</label>
+                  <input type="text" id="5w2h-why" required placeholder="Ex: Eliminar reincidência de erros..." class="neo-input w-full p-2 text-xs">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">3. Who (Quem?)*</label>
+                    <input type="text" id="5w2h-who" required placeholder="Ex: Supervisor / QA" class="neo-input w-full p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">4. When (Quando?)*</label>
+                    <input type="date" id="5w2h-when" required class="neo-input w-full p-2 text-xs">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">5. Where (Onde?)</label>
+                    <input type="text" id="5w2h-where" value="1:1 Virtual / Operação" class="neo-input w-full p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">6. How Much (Custo)</label>
+                    <input type="text" id="5w2h-howmuch" value="R$ 0,00" class="neo-input w-full p-2 text-xs">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-slate-400 font-bold text-[10px] uppercase mb-1">7. How (Como será feito?)*</label>
+                  <textarea id="5w2h-how" rows="2" required placeholder="Ex: Aplicação de alinhamento prático utilizando os exemplos da SOP..." class="neo-input w-full p-2 text-xs"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-2 text-xs flex items-center justify-center space-x-1 font-bold mt-2 bg-[#DF4F91] text-white border-2 border-black shadow-brutal-sm">
+                  <span>Salvar &amp; Concluir RNC</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="view-disputes" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card p-6">
+          <h3 class="text-sm font-black uppercase text-slate-200">Módulo de Calibração &amp; Contestações</h3>
+        </div>
+      </section>
+
+      <section id="view-history" class="hidden space-y-6 max-w-7xl mx-auto">
+        <div class="neo-card overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-black text-slate-400">
+              <tr>
+                <th class="p-3">Data</th>
+                <th class="p-3">Ticket</th>
+                <th class="p-3">Analista</th>
+                <th class="p-3">Score</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-calc" class="hidden space-y-6 max-w-5xl mx-auto">
+        <div class="neo-card p-6">
+          <h2 class="text-sm font-black text-white uppercase mb-4">Calculadora de Amostragem (AQL)</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="block text-slate-400 font-bold mb-1">Volume Diário</label>
+              <input type="number" id="sample-daily-vol" value="35" oninput="calculateSamplingQuota()" class="neo-input w-full p-2">
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1">Dias Trabalhados</label>
+              <input type="number" id="sample-work-days" value="5" oninput="calculateSamplingQuota()" class="neo-input w-full p-2">
+            </div>
+            <div>
+              <label class="block text-slate-400 font-bold mb-1">Nível de Senioridade</label>
+              <select id="sample-tenure-tier" onchange="calculateSamplingQuota()" class="neo-input w-full p-2">
+                <option value="senior">Senior (3.5%)</option>
+                <option value="ramp">Ramp-up (10%)</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-xs text-slate-400 block font-bold">Quota de Amostra Recomendada:</span>
+            <span id="sample-result-quota" class="text-2xl font-black text-amber-400 font-mono">7 / semana</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: ANALYTICS (analytics) -->
+      <section id="view-analytics" class="hidden main-card-container space-y-4 max-w-6xl mx-auto p-6 my-6">
+
+        <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-brutal-sm w-full">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded bg-[#FFDD00] text-black font-black text-xs uppercase border border-black shadow-brutal-sm">
+              Inteligência SGQ
+            </span>
+            <div>
+              <h2 class="text-sm font-black text-white uppercase tracking-wider">Dashboard de Analytics &amp; Análise de Pareto (80/20)</h2>
+              <p class="text-[11px] text-slate-400 font-bold">Diagnóstico Macro de Qualidade • Principais Ofensores da SOP</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="carregarDadosDeTeste()"
+              class="text-xs py-1.5 px-3 flex items-center gap-1.5 font-black text-black bg-[#FFDD00] border-2 border-black shadow-brutal-sm hover:brightness-110">
+              <span>Carregar Dados Demo</span>
+            </button>
+
+            <button type="button" onclick="renderParetoCharts()"
+              class="text-xs py-1.5 px-3 flex items-center gap-1.5 font-bold text-white bg-blue-600 border-2 border-black shadow-brutal-sm hover:brightness-110">
+              <span>Atualizar Gráficos</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+          <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col justify-between shadow-brutal-sm">
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Taxa de Conformidade</span>
+            <div id="kpi-pass-rate" class="text-3xl font-black text-emerald-400 font-mono my-1">--%</div>
+            <span class="text-[10px] text-slate-500 font-bold block">Meta SOP: ≥ 90.0%</span>
+          </div>
+
+          <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col justify-between shadow-brutal-sm">
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Total de Inspeções</span>
+            <div id="kpi-total-audits" class="text-3xl font-black text-white font-mono my-1">0</div>
+            <span class="text-[10px] text-slate-500 font-bold block">Base de Auditorias</span>
+          </div>
+
+          <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col justify-between shadow-brutal-sm">
+            <span class="text-[10px] font-black text-rose-400 uppercase tracking-wider block">Top Ofensor SOP</span>
+            <div id="kpi-top-offender" class="text-xs font-black text-rose-300 truncate my-1 py-1" title="Buscando...">Buscando...</div>
+            <span class="text-[10px] text-slate-500 font-bold block">Maior volume de desvios</span>
+          </div>
+
+          <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black flex flex-col justify-between shadow-brutal-sm">
+            <span class="text-[10px] font-black text-purple-400 uppercase tracking-wider block">Eficácia PDCA</span>
+            <div id="kpi-pdca-efficacy" class="text-3xl font-black text-purple-400 font-mono my-1">--%</div>
+            <span class="text-[10px] text-slate-500 font-bold block">RNCs tratadas e resolvidas</span>
+          </div>
+        </div>
+
+        <div class="neo-card p-4 bg-[#1A1A1A] border-2 border-black space-y-3 w-full shadow-brutal-sm">
+          <div class="flex items-center justify-between border-b-2 border-black pb-2">
+            <h3 class="text-xs font-black uppercase text-slate-100 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#DF4F91]"></span>
+              <span>Diagrama de Pareto: Distribuição de Desvios por Regra SOP</span>
+            </h3>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">Regra 80/20</span>
+          </div>
+
+          <div class="relative h-80 w-full pt-2">
+            <canvas id="chart-pareto-motivos"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAIS OPERACIONAIS -->
+  <div id="modal-rnc" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="neo-card max-w-lg w-full p-6 space-y-3">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-black">
+        <h3 class="font-black text-sm uppercase text-white">Registrar Não Conformidade (RNC)</h3>
+        <button type="button" onclick="closeRncModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <input type="text" id="rnc-modal-titulo" placeholder="Título da RNC..." class="neo-input w-full p-2">
+        <textarea id="rnc-modal-descricao" rows="3" placeholder="Descrição detalhada..." class="neo-input w-full p-2"></textarea>
+      </div>
+      <div class="pt-2 border-t border-slate-800 flex justify-end space-x-2 text-xs">
+        <button type="button" onclick="closeRncModal()" class="px-3 py-2 border border-slate-700 rounded-xl font-bold">Cancelar</button>
+        <button type="button" onclick="saveRncForm()" class="px-4 py-2 bg-[#FFDD00] text-black font-black border-2 border-black rounded-xl">Salvar RNC</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-itens-v5" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="neo-card max-w-lg w-full max-h-[90vh] flex flex-col p-6 space-y-3">
+      <div class="flex justify-between items-center border-b-2 border-black pb-2">
+        <h3 id="modal-titulo-categoria-v5" class="font-black text-sm uppercase text-white">Categoria</h3>
+        <button type="button" onclick="fecharModalItensErroV5()" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+      <div class="flex gap-2 text-xs">
+        <input type="text" id="v5-modal-item-nome" placeholder="Nome do produto..." class="neo-input flex-1 p-2">
+        <button type="button" onclick="adicionarItemErroV5()" class="px-3 py-2 text-xs font-black bg-[#FFDD00] text-black border-2 border-black rounded-xl">+ Inserir</button>
+      </div>
+      <div id="v5-modal-lista" class="space-y-1 max-h-48 overflow-y-auto p-2 border border-slate-800 rounded-xl bg-slate-950 text-xs"></div>
+      <div class="pt-2 border-t border-slate-800 flex justify-between text-xs">
+        <button type="button" onclick="limparItensV5()" class="text-rose-400 underline font-bold">Limpar</button>
+        <button type="button" onclick="confirmarItensV5()" class="px-4 py-2 font-black bg-[#FFDD00] text-black border-2 border-black rounded-xl">Concluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-[#FFDD00] text-black border-2 border-black font-black px-5 py-3 rounded-xl shadow-brutal flex items-center space-x-2 text-xs uppercase">
+      <span>✓</span>
+      <span id="toast-msg">Notificação</span>
+    </div>
+  </div>
+
+  <!-- SCRIPT UNIFICADO & ESTÁVEL -->
+  <script>
+    const TEAM_ROSTER = [
+      { name: "gabriel.brandao_v", leader: "Paulo Silva", office: "Internal", audits: 8, avgScore: 82.5 },
+      { name: "marina.costa", leader: "Paulo Silva", office: "Internal", audits: 7, avgScore: 98.6 },
+      { name: "lucas.ferreira", leader: "Paulo Silva", office: "Internal", audits: 6, avgScore: 78.0 },
+      { name: "alessandra.lima", leader: "Paulo Silva", office: "Internal", audits: 7, avgScore: 96.0 },
+      { name: "bruno.souza", leader: "Paulo Silva", office: "Internal", audits: 6, avgScore: 94.2 },
+      { name: "camila.duarte", leader: "Paulo Silva", office: "Internal", audits: 8, avgScore: 99.2 },
+      { name: "diego.martins", leader: "Paulo Silva", office: "Internal", audits: 5, avgScore: 91.5 },
+      { name: "elen.rocha", leader: "Paulo Silva", office: "Internal", audits: 6, avgScore: 95.8 },
+      { name: "fabricio.alves", leader: "Carla Dias", office: "Internal", audits: 7, avgScore: 97.0 },
+      { name: "gisele.nunes", leader: "Carla Dias", office: "Internal", audits: 6, avgScore: 93.4 },
+      { name: "heitor.barbosa", leader: "Carla Dias", office: "Internal", audits: 5, avgScore: 88.5 },
+      { name: "isabela.pinto", leader: "Carla Dias", office: "Internal", audits: 8, avgScore: 98.0 },
+      { name: "joao.pedro_qa", leader: "Carla Dias", office: "Internal", audits: 7, avgScore: 92.0 },
+      { name: "karina.melo", leader: "Carla Dias", office: "Internal", audits: 6, avgScore: 96.5 },
+      { name: "leonardo.vaz", leader: "Carla Dias", office: "Internal", audits: 5, avgScore: 84.0 },
+      { name: "monica.ribeiro", leader: "Carla Dias", office: "Internal", audits: 7, avgScore: 95.0 },
+      { name: "nelson.tavares", leader: "Roberto Mendes", office: "Vendor BPO", audits: 6, avgScore: 91.0 },
+      { name: "olivia.castro", leader: "Roberto Mendes", office: "Vendor BPO", audits: 7, avgScore: 96.8 },
+      { name: "patricia.leal", leader: "Roberto Mendes", office: "Vendor BPO", audits: 6, avgScore: 94.0 },
+      { name: "renan.brito", leader: "Roberto Mendes", office: "Vendor BPO", audits: 5, avgScore: 79.5 },
+      { name: "sabrina.santos", leader: "Roberto Mendes", office: "Vendor BPO", audits: 8, avgScore: 98.4 },
+      { name: "thiago.guimaraes", leader: "Roberto Mendes", office: "Vendor BPO", audits: 6, avgScore: 93.0 },
+      { name: "ulysses.freitas", leader: "Roberto Mendes", office: "Vendor BPO", audits: 5, avgScore: 87.5 },
+      { name: "vanessa.machado", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 7, avgScore: 97.2 },
+      { name: "wagner.lopes", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 6, avgScore: 90.0 },
+      { name: "xavier.morais", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 5, avgScore: 83.5 },
+      { name: "yasmin.teixeira", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 7, avgScore: 96.0 },
+      { name: "zelia.fontes", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 6, avgScore: 94.5 },
+      { name: "arthur.rezende", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 5, avgScore: 89.0 },
+      { name: "beatriz.almeida", leader: "Fernanda Rocha", office: "Vendor BPO", audits: 7, avgScore: 97.8 }
+    ];
+
+    let BackendDB = { audits: [], actionPlans: [], disputes: [] };
+    let appTickets = [];
+    window.itensPorCategoriaV5 = {};
+    let paretoChartInstance = null;
+
+    const STORAGE_KEY_DADOS = '99food_painel_qa_dados_v1';
+
+    // NAVEGAÇÃO PRINCIPAL ENTRE ABAS (ROBUSTA)
+    window.switchTab = function(tabId) {
+      const cleanId = String(tabId || '').replace(/^view-/, '').trim();
+      const tabs = ['dashboard', 'tickets', 'audit', 'calc-v5', 'ranking', 'analytics', 'pdca', 'disputes', 'history', 'calc'];
+      
+      const titleMap = {
+        'dashboard': 'PAINEL GERAL',
+        'tickets': 'GESTÃO DE RNCs & LEAN',
+        'audit': 'FICHA DE AUDITORIA DO MENU (SOP OFICIAL)',
+        'calc-v5': 'CALCULADORA DE AUDITORIA DE CARDÁPIOS & GROCERY',
+        'ranking': 'SCORECARD DA EQUIPE',
+        'analytics': 'PARETO & MÉTRICAS QA',
+        'pdca': 'PLANOS DE AÇÃO (PDCA & 5W2H)',
+        'disputes': 'CONTESTAÇÕES & RECURSO',
+        'history': 'HISTÓRICO GERAL',
+        'calc': 'CALCULADORA SOP & AMOSTRA'
+      };
+
+      const topTitle = document.getElementById('topbar-section-title');
+      if (topTitle) topTitle.innerText = titleMap[cleanId] || 'MÓDULO QA';
+
+      tabs.forEach(t => {
+        const viewEl = document.getElementById('view-' + t);
+        const btnEl = document.getElementById('tab-btn-' + t);
+
+        if (viewEl) {
+          if (t === cleanId) {
+            viewEl.classList.remove('hidden');
+          } else {
+            viewEl.classList.add('hidden');
+          }
+        }
+
+        if (btnEl) {
+          if (t === cleanId) {
+            btnEl.classList.add('active-tab');
+          } else {
+            btnEl.classList.remove('active-tab');
+          }
+        }
+      });
+
+      // Gatilhos de carregamento sob demanda
+      if (cleanId === 'pdca' || cleanId === 'tickets') renderRncTable();
+      if (cleanId === 'ranking') renderRankingTable();
+      if (cleanId === 'calc-v5') executarCalculosV5();
+      if (cleanId === 'history') renderHistoryTable();
+      if (cleanId === 'analytics') setTimeout(renderParetoCharts, 60);
+
+      const mainScroll = document.querySelector('main > div');
+      if (mainScroll) mainScroll.scrollTop = 0;
+    };
+
+    window.navegarPara = function(telaId, titulo) {
+      window.switchTab(telaId);
+      if (titulo) {
+        const el = document.getElementById('topbar-section-title');
+        if (el) el.innerText = titulo;
+      }
+    };
+
+    function switchCalcSubtab(sub) {
+      document.getElementById('subtab-calc-audit')?.classList.toggle('hidden', sub !== 'audit');
+      document.getElementById('subtab-calc-grocery')?.classList.toggle('hidden', sub !== 'grocery');
+
+      const btnA = document.getElementById('btn-calcsub-audit');
+      const btnG = document.getElementById('btn-calcsub-grocery');
+
+      if (sub === 'audit') {
+        if (btnA) btnA.className = 'px-3.5 py-1.5 rounded-lg font-black text-xs bg-[#FFDD00] text-black shadow-brutal-sm';
+        if (btnG) btnG.className = 'px-3.5 py-1.5 rounded-lg font-black text-xs text-slate-400 hover:text-white';
+        executarCalculosV5();
+      } else {
+        if (btnG) btnG.className = 'px-3.5 py-1.5 rounded-lg font-black text-xs bg-[#FFDD00] text-black shadow-brutal-sm';
+        if (btnA) btnA.className = 'px-3.5 py-1.5 rounded-lg font-black text-xs text-slate-400 hover:text-white';
+        updateGroceryCalculatorV5();
+      }
+    }
+
+    // ON ANALYST SELECT CHANGE COM TRATAMENTO DE ERROS
+    function onAnalystSelectChange() {
+      const select = document.getElementById('input-analyst');
+      if (!select) return;
+      const opt = select.options[select.selectedIndex];
+      if (opt) {
+        const leaderInput = document.getElementById('input-leader');
+        if (leaderInput) leaderInput.value = opt.getAttribute('data-leader') || 'Paulo Silva';
+      }
+      runAutoValidation();
+    }
+
+    // VALIDAÇÃO DA FICHA DE AUDITORIA
+    function runAutoValidation() {
+      const totalItens = parseInt(document.getElementById('num-itens-sem-mod')?.value || '0', 10);
+      const fonteIfood = document.getElementById('field-fonte-ifood')?.value || 'nao';
+      const validacaoFonte = document.getElementById('field-validacao-fonte')?.value || 'valida';
+      const precosErrados = parseInt(document.getElementById('num-precos-errados')?.value || '0', 10);
+
+      const chkItens = document.getElementById('chk-itens-90')?.value || 'sim';
+      const chkPreco = document.getElementById('chk-preco-90')?.value || 'sim';
+      const chkImg = document.getElementById('chk-img-90')?.value || 'sim';
+      const chkNome = document.getElementById('chk-nome-90')?.value || 'sim';
+      const chkDesc = document.getElementById('chk-desc-90')?.value || 'sim';
+      const chkGenericos = document.getElementById('chk-genericos')?.value || 'nao';
+
+      const gradePreco = document.getElementById('grade-preco')?.value || 'A';
+      const gradeItens = document.getElementById('grade-itens')?.value || 'A';
+
+      let score = 100;
+      let issues = [];
+
+      if (validacaoFonte === 'proibida' || fonteIfood === 'sim') {
+        score = 0;
+        issues.push('CRITICAL FAIL: Fonte Proibida ou Link do iFood');
+      } else {
+        const isSmallMenu = totalItens < 15 && totalItens > 0;
+        if (isSmallMenu && precosErrados > 0) {
+          score -= 25;
+          issues.push(`Menu Pequeno (<15 itens): Preço incorreto [-25%]`);
+        } else if (precosErrados > 0) {
+          score -= (precosErrados * 5);
+          issues.push(`${precosErrados} preço(s) incorreto(s)`);
+        }
+
+        if (chkItens === 'nao') { score -= 15; issues.push('Itens abaixo da régua de 90%'); }
+        if (chkPreco === 'nao') { score -= 15; issues.push('Divergência geral de preços (> 10%)'); }
+        if (chkImg === 'nao') { score -= 10; issues.push('Inconformidade de Imagens'); }
+        if (chkNome === 'nao') { score -= 10; issues.push('Inconformidade de Nomes'); }
+        if (chkDesc === 'nao') { score -= 10; issues.push('Inconformidade de Descrições'); }
+        if (chkGenericos === 'sim') { score -= 10; issues.push('Falha em itens genéricos (mín. 10%)'); }
+
+        if (gradePreco === 'B') score -= 5;
+        if (gradePreco === 'C') { score -= 15; issues.push('Classificação [C] em Preços'); }
+        if (gradeItens === 'C') { score -= 15; issues.push('Classificação [C] em Itens'); }
+      }
+
+      score = Math.max(0, Math.min(100, score));
+
+      const scoreEl = document.getElementById('display-score');
+      const barEl = document.getElementById('display-score-bar');
+      const labelEl = document.getElementById('display-score-label');
+      const alertsEl = document.getElementById('sop-alerts-container');
+      const resultSelect = document.getElementById('audit-final-result');
+      const blocoIshikawa = document.getElementById('bloco-ishikawa');
+      const blocoRcaProfundo = document.getElementById('bloco-rca-profundo');
+      const statusBadge = document.getElementById('audit-status-badge');
+
+      if (scoreEl) scoreEl.innerText = score.toFixed(1) + '%';
+      if (barEl) barEl.style.width = score + '%';
+
+      if (score < 100) {
+        if (blocoRcaProfundo) blocoRcaProfundo.classList.remove('hidden');
+        if (blocoIshikawa) blocoIshikawa.classList.remove('hidden');
+        if (statusBadge) { statusBadge.innerText = 'Desvios Detectados'; statusBadge.className = 'text-xs font-bold text-rose-400'; }
+      } else {
+        if (blocoRcaProfundo) blocoRcaProfundo.classList.add('hidden');
+        if (blocoIshikawa) blocoIshikawa.classList.add('hidden');
+        if (statusBadge) { statusBadge.innerText = '100% Conforme'; statusBadge.className = 'text-xs font-bold text-emerald-400'; }
+      }
+
+      if (score >= 90) {
+        if (scoreEl) scoreEl.className = 'text-4xl font-black text-emerald-400 my-1 font-mono';
+        if (barEl) barEl.className = 'bg-emerald-500 h-full transition-all duration-300';
+        if (labelEl) labelEl.innerText = 'Classificação: Alta Qualidade (Aprovado)';
+        if (resultSelect) resultSelect.value = 'Aprovado';
+      } else if (score >= 70) {
+        if (scoreEl) scoreEl.className = 'text-4xl font-black text-amber-400 my-1 font-mono';
+        if (barEl) barEl.className = 'bg-amber-400 h-full transition-all duration-300';
+        if (labelEl) labelEl.innerText = 'Classificação: Aprovado com Ressalva';
+        if (resultSelect) resultSelect.value = 'Aprovado com Feedback';
+      } else {
+        if (scoreEl) scoreEl.className = 'text-4xl font-black text-rose-500 my-1 font-mono';
+        if (barEl) barEl.className = 'bg-rose-500 h-full transition-all duration-300';
+        if (labelEl) labelEl.innerText = 'Classificação: Reprovado na Auditoria';
+        if (resultSelect) resultSelect.value = 'Não Aprovado';
+      }
+
+      if (alertsEl) {
+        if (issues.length > 0) {
+          alertsEl.innerHTML = `
+            <div class="p-2.5 rounded-lg border-2 border-rose-900 bg-rose-950/20 text-rose-300 text-xs font-bold space-y-1">
+              <span class="block text-rose-400 font-black">⚠️ Inconformidades (${issues.length}):</span>
+              <ul class="list-disc list-inside text-[11px] space-y-0.5">
+                ${issues.map(i => `<li>${i}</li>`).join('')}
+              </ul>
+            </div>`;
+        } else {
+          alertsEl.innerHTML = `
+            <div class="p-2.5 rounded-lg border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 text-[11px] font-black flex items-center space-x-2">
+              <span>✓</span>
+              <span>Cardápio 100% conforme SOP</span>
+            </div>`;
+        }
+      }
+
+      return { score, issues };
+    }
+
+    function submitAuditForm() {
+      const { score, issues } = runAutoValidation();
+      const shopId = document.getElementById('input-shopId')?.value || '-';
+      const systemId = document.getElementById('input-systemId')?.value || '-';
+      const analyst = document.getElementById('input-analyst')?.value || 'N/A';
+      const leader = document.getElementById('input-leader')?.value || '-';
+      const tenure = document.getElementById('input-tenure')?.value || '-';
+      const result = document.getElementById('audit-final-result')?.value || 'Aprovado';
+      const feedback = document.getElementById('audit-feedback')?.value || '';
+
+      const fosErro = document.getElementById('rca-fos-erro')?.value || '';
+      const motivoTecnico = document.getElementById('rca-motivo-tecnico')?.value || '';
+      const causaOperacional = document.getElementById('rca-causa-operacional')?.value || '';
+
+      if (score < 100 && (!fosErro || !motivoTecnico || !causaOperacional)) {
+        alert("Preencha todos os campos do Diagnóstico Profundo RCA (FOS, Motivo e Causa Raiz).");
+        return;
+      }
+
+      const registro = {
+        date: new Date().toISOString().substring(0, 16).replace('T', ' '),
+        ticketId: systemId !== '-' ? systemId : ('SOP-' + Math.floor(100000 + Math.random() * 900000)),
+        shopId, analyst, leader, tenure, score, result,
+        fosErro, motivoTecnico, rca: causaOperacional, feedback
+      };
+
+      BackendDB.audits.unshift(registro);
+
+      if (score < 90) {
+        const novaRnc = {
+          id: Math.floor(1000 + Math.random() * 9000),
+          titulo: `Inconformidade SOP: ${motivoTecnico || issues[0] || 'Desvio'}`,
+          origem: "Auditoria SOP 99Food",
+          severidade: score === 0 ? "Crítica" : "Alta",
+          status: "Em Análise",
+          conclusao_causa: causaOperacional
+        };
+        appTickets.unshift(novaRnc);
+        renderRncTable();
+        showToast(`Auditoria salva e RNC #${novaRnc.id} emitida!`);
+      } else {
+        showToast('Auditoria finalizada com sucesso!');
+      }
+
+      salvarNoLocalStorage();
+      renderHistoryTable();
+    }
+
+    function iniciarNovaAuditoria() {
+      switchTab('audit');
+      document.getElementById('input-shopId').value = '';
+      document.getElementById('input-systemId').value = '';
+      document.getElementById('audit-feedback').value = '';
+      runAutoValidation();
+      showToast('Formulário pronto para nova auditoria!');
+    }
+
+    // CALCULADORA V5.5 (MATEMÁTICA PURA)
+    function getNumVal(id) {
+      const el = document.getElementById(id);
+      if (!el || el.value === '') return null;
+      const v = parseFloat(el.value);
+      return isNaN(v) ? null : v;
+    }
+
+    function lidarComB5V5() { executarCalculosV5(); }
+    function lidarComNaoVendidosV5() { executarCalculosV5(); }
+    function lidarComGrupoModV5() {
+      const grupo = getNumVal('inputGrupoModificadores') || 0;
+      const b14 = document.getElementById('inputB14');
+      if (b14) b14.value = grupo > 0 ? grupo : '';
+      executarCalculosV5();
+    }
+
+    function calcularTaxaDi(bi, ci) {
+      if ((bi === 0 || bi === null) && (ci === 0 || ci === null)) return 0;
+      if (bi === 0 && ci > 0) return 1.0;
+      if (bi === null || ci === null) return null;
+      return bi > 0 ? ci / bi : 0;
+    }
+
+    function formatarPct(v) {
+      if (v === null || isNaN(v) || !isFinite(v)) return '';
+      return (v * 100).toFixed(2) + '%';
+    }
+
+    function atualizarBadgeE(id, pct, temDados) {
+      const badge = document.getElementById(id);
+      if (!badge) return;
+      if (!temDados || pct === null) {
+        badge.innerText = '';
+        badge.className = 'px-2 py-0.5 rounded font-black text-[10px] hidden';
+        return;
+      }
+      if (pct < 0.10) {
+        badge.innerText = 'Aprovado';
+        badge.className = 'px-2 py-0.5 rounded font-black text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 inline-block';
+      } else {
+        badge.innerText = 'Reprovado';
+        badge.className = 'px-2 py-0.5 rounded font-black text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/40 inline-block';
+      }
+    }
+
+    function executarCalculosV5() {
+      const rawB5 = getNumVal('inputB5') || 0;
+      const naoVendidos = getNumVal('inputNaoVendidos') || 0;
+      const b5Efetivo = Math.max(0, rawB5 - naoVendidos);
+      const grupoMod = getNumVal('inputGrupoModificadores') || 0;
+
+      const b13 = b5Efetivo + grupoMod;
+      const elB13 = document.getElementById('inputB13');
+      if (elB13) elB13.value = (rawB5 > 0 || grupoMod > 0) ? b13 : '';
+
+      const b14 = grupoMod;
+      const h5 = b5Efetivo * 6;
+      const h13 = grupoMod * 5;
+      const capacidadeTotal = h5 + h13;
+
+      const elH5 = document.getElementById('inputH5');
+      const elH13 = document.getElementById('inputH13');
+      if (elH5) elH5.value = rawB5 > 0 ? h5 : '';
+      if (elH13) elH13.value = grupoMod > 0 ? h13 : '';
+
+      const c6 = getNumVal('inputC6');
+      const c7 = getNumVal('inputC7');
+      const c8 = getNumVal('inputC8');
+      const cGen = getNumVal('inputCGenericos');
+      const c9 = getNumVal('inputC9');
+      const c10 = getNumVal('inputC10');
+      const c11 = getNumVal('inputC11');
+      const c14 = getNumVal('inputC14');
+
+      const b6 = getNumVal('inputB6');
+      const b7 = getNumVal('inputB7');
+
+      const d6 = calcularTaxaDi(b6, c6);
+      const d7 = calcularTaxaDi(b7, c7);
+      const d8 = calcularTaxaDi(b5Efetivo, c8);
+      const dGen = calcularTaxaDi(b5Efetivo, cGen);
+      const d9 = calcularTaxaDi(b5Efetivo, c9);
+      const d10 = calcularTaxaDi(b5Efetivo, c10);
+      const d11 = calcularTaxaDi(b5Efetivo, c11);
+      const d14 = calcularTaxaDi(b14, c14);
+
+      const setInput = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = formatarPct(val);
+      };
+
+      setInput('inputD6', d6);
+      setInput('inputD7', d7);
+      setInput('inputD8', d8);
+      setInput('inputDGenericos', dGen);
+      setInput('inputD9', d9);
+      setInput('inputD10', d10);
+      setInput('inputD11', d11);
+      setInput('inputD14', d14);
+
+      atualizarBadgeE('badgeE6', d6, d6 !== null);
+      atualizarBadgeE('badgeE7', d7, d7 !== null);
+      atualizarBadgeE('badgeE8', d8, d8 !== null);
+      atualizarBadgeE('badgeEGenericos', dGen, dGen !== null);
+      atualizarBadgeE('badgeE9', d9, d9 !== null);
+      atualizarBadgeE('badgeE10', d10, d10 !== null);
+      atualizarBadgeE('badgeE11', d11, d11 !== null);
+      atualizarBadgeE('badgeE14', d14, d14 !== null);
+
+      const errosArr = [c6, c7, c8, cGen, c9, c10, c11, c14];
+      const temAtu = errosArr.some(v => v !== null);
+      const somaC16 = temAtu ? errosArr.reduce((a, b) => a + (b || 0), 0) : 0;
+
+      const elC16 = document.getElementById('inputC16');
+      if (elC16) elC16.value = temAtu ? somaC16 : '';
+
+      const d16 = capacidadeTotal > 0 ? (somaC16 / capacidadeTotal) : 0;
+      setInput('inputD16', temAtu ? d16 : null);
+      atualizarBadgeE('badgeE16', d16, temAtu);
+
+      const categoriasArr = [d6, d7, d8, dGen, d9, d10, d11, d14];
+      const categoriasReprovadas = categoriasArr.filter(d => d !== null && d >= 0.10).length;
+
+      const card = document.getElementById('card-resultado-v5');
+      const texto = document.getElementById('texto-status-v5');
+      const badge = document.getElementById('badge-resultado-v5');
+
+      if (rawB5 <= 0) {
+        if (card) card.className = 'neo-card p-5 bg-slate-950 border-2 border-black transition-all';
+        if (texto) texto.innerText = 'Aguardando preenchimento da FONTE...';
+        if (badge) { badge.innerText = 'Pendente'; badge.className = 'px-4 py-1.5 rounded-xl font-black text-xs uppercase bg-slate-800 text-slate-300 shadow-brutal-sm'; }
+      } else {
+        const ehMenuPequeno = b5Efetivo < 15;
+        const reprovado = ehMenuPequeno ? (categoriasReprovadas >= 2) : (d16 >= 0.10 || categoriasReprovadas >= 1);
+
+        if (reprovado) {
+          if (card) card.className = 'neo-card p-5 bg-rose-950/40 border-2 border-rose-600 transition-all';
+          if (texto) texto.innerText = 'REPROVADO NA AUDITORIA';
+          if (badge) { badge.innerText = 'Reprovado'; badge.className = 'px-4 py-1.5 rounded-xl font-black text-xs uppercase bg-rose-600 text-white shadow-brutal-sm'; }
+        } else {
+          if (card) card.className = 'neo-card p-5 bg-emerald-950/40 border-2 border-emerald-500 transition-all';
+          if (texto) texto.innerText = 'APROVADO NA AUDITORIA';
+          if (badge) { badge.innerText = 'Aprovado'; badge.className = 'px-4 py-1.5 rounded-xl font-black text-xs uppercase bg-emerald-500 text-black shadow-brutal-sm'; }
+        }
+      }
+    }
+
+    function resetarPlanilhaV5() {
+      ['inputB5', 'inputNaoVendidos', 'inputB6', 'inputC6', 'inputB7', 'inputC7', 'inputC8', 'inputCGenericos', 'inputC9', 'inputC10', 'inputC11', 'inputGrupoModificadores', 'inputB14', 'inputC14'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      executarCalculosV5();
+      showToast('Calculadora resetada.');
+    }
+
+    // GROCERY
+    function sincronizarGroceryInputV5(t) {
+      const inp = document.getElementById(t === 'total' ? 'total-input' : 'prepared-input');
+      const sld = document.getElementById(t === 'total' ? 'total-slider' : 'prepared-slider');
+      if (inp && sld) sld.value = inp.value;
+      updateGroceryCalculatorV5();
+    }
+    function sincronizarGrocerySliderV5(t) {
+      const inp = document.getElementById(t === 'total' ? 'total-input' : 'prepared-input');
+      const sld = document.getElementById(t === 'total' ? 'total-slider' : 'prepared-slider');
+      if (inp && sld) inp.value = sld.value;
+      updateGroceryCalculatorV5();
+    }
+    function updateGroceryCalculatorV5() {
+      const total = parseInt(document.getElementById('total-input')?.value, 10) || 0;
+      const prep = parseInt(document.getElementById('prepared-input')?.value, 10) || 0;
+      const pct = total > 0 ? (prep / total) * 100 : 0;
+
+      const circle = document.getElementById('v5-grocery-circle');
+      if (circle) {
+        const circum = 251.2;
+        circle.style.strokeDashoffset = circum - (Math.min(100, pct) / 100) * circum;
+        circle.style.stroke = pct >= 30 ? '#10b981' : '#ef4444';
+      }
+
+      const badgePct = document.getElementById('v5-grocery-percentage-badge');
+      const badgeRatio = document.getElementById('v5-grocery-ratio-badge');
+      if (badgePct) badgePct.innerText = pct.toFixed(1) + '%';
+      if (badgeRatio) badgeRatio.innerText = `${prep} / ${total}`;
+    }
+
+    // MODAL DE ITENS COM ERRO
+    function abrirModalItensErroV5(inputId, nome) {
+      window.categoriaAtivaV5 = inputId;
+      document.getElementById('modal-titulo-categoria-v5').innerText = nome;
+      document.getElementById('modal-itens-v5').classList.remove('hidden');
+    }
+    function fecharModalItensErroV5() { document.getElementById('modal-itens-v5').classList.add('hidden'); }
+    function adicionarItemErroV5() {
+      const nome = document.getElementById('v5-modal-item-nome')?.value.trim();
+      if (!nome) return;
+      const inputId = window.categoriaAtivaV5;
+      if (!window.itensPorCategoriaV5[inputId]) window.itensPorCategoriaV5[inputId] = [];
+      window.itensPorCategoriaV5[inputId].push(nome);
+      const el = document.getElementById(inputId);
+      if (el) el.value = window.itensPorCategoriaV5[inputId].length;
+      document.getElementById('v5-modal-item-nome').value = '';
+      executarCalculosV5();
+      fecharModalItensErroV5();
+    }
+    function limparItensV5() {
+      const inputId = window.categoriaAtivaV5;
+      if (inputId) {
+        window.itensPorCategoriaV5[inputId] = [];
+        const el = document.getElementById(inputId);
+        if (el) el.value = '';
+      }
+      executarCalculosV5();
+      fecharModalItensErroV5();
+    }
+    function confirmarItensV5() { fecharModalItensErroV5(); }
+
+    // RENDERIZADORES DE TABELAS
+    function renderRncTable() {
+      const tbodies = [document.getElementById('rnc-table-body'), document.getElementById('rnc-table-body-pdca')];
+      tbodies.forEach(tbody => {
+        if (!tbody) return;
+        if (appTickets.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500 font-bold">Nenhuma Não Conformidade registrada.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = appTickets.map(t => `
+          <tr class="hover:bg-slate-900/50">
+            <td class="p-2.5 font-mono font-bold text-slate-200">#${t.id}</td>
+            <td class="p-2.5 font-bold text-slate-300">${t.titulo}</td>
+            <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded ${t.severidade === 'Crítica' ? 'bg-rose-950 text-rose-300' : 'bg-amber-950 text-amber-300'}">${t.severidade}</span></td>
+            <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold rounded ${t.status === 'Concluído' ? 'bg-emerald-950 text-emerald-300' : 'bg-slate-800 text-slate-300'}">${t.status}</span></td>
+            <td class="p-2.5 text-center">
+              <button type="button" onclick="selecionarRncPara5W2H('${t.id}')" class="px-2.5 py-1 text-[10px] font-black uppercase rounded bg-[#FFDD00] text-black border border-black hover:bg-yellow-400">Tratar</button>
+            </td>
+          </tr>
+        `).join('');
+      });
+
+      const total = appTickets.length;
+      const done = appTickets.filter(t => t.status === "Concluído").length;
+      document.getElementById('pdca-count-total')?.replaceChildren(document.createTextNode(total));
+      document.getElementById('pdca-count-open')?.replaceChildren(document.createTextNode(total - done));
+      document.getElementById('pdca-count-done')?.replaceChildren(document.createTextNode(done));
+      document.getElementById('badge-sidebar-rnc')?.replaceChildren(document.createTextNode(total - done));
+    }
+
+    function selecionarRncPara5W2H(rncId) {
+      switchTab('pdca');
+      const rnc = appTickets.find(t => String(t.id) === String(rncId));
+      if (!rnc) return;
+      document.getElementById('5w2h-rnc-id').value = rnc.id;
+      document.getElementById('5w2h-rnc-badge').innerText = `RNC #${rnc.id}`;
+      document.getElementById('5w2h-what').value = `Tratativa: ${rnc.titulo}`;
+      document.getElementById('5w2h-why').value = `Eliminar reincidência de desvio operacional`;
+      document.getElementById('5w2h-who').value = 'Líder Supervisor / QA';
+      document.getElementById('5w2h-how').value = 'Alinhamento 1:1 e reciclagem de SOP.';
+    }
+
+    function salvarPlano5W2H(e) {
+      e.preventDefault();
+      const id = document.getElementById('5w2h-rnc-id').value;
+      const rnc = appTickets.find(t => String(t.id) === String(id));
+      if (rnc) {
+        rnc.status = "Concluído";
+        salvarNoLocalStorage();
+        renderRncTable();
+        document.getElementById('form-5w2h').reset();
+        document.getElementById('5w2h-rnc-badge').innerText = 'RNC #-';
+        showToast(`RNC #${id} tratada e concluída!`);
+      }
+    }
+
+    function renderRankingTable() {
+      const tbody = document.getElementById('ranking-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = TEAM_ROSTER.map((a, i) => `
+        <tr class="hover:bg-slate-800/40">
+          <td class="p-3 font-bold text-white">${i + 1}. ${a.name}</td>
+          <td class="p-3 text-slate-400">${a.leader}</td>
+          <td class="p-3 text-slate-500 font-mono text-[11px]">${a.office}</td>
+          <td class="p-3 font-mono">${a.audits}</td>
+          <td class="p-3 font-mono font-black text-amber-400">${a.avgScore.toFixed(1)}%</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = BackendDB.audits.map(a => `
+        <tr class="hover:bg-slate-800/40">
+          <td class="p-3 font-mono text-slate-400 text-xs">${a.date}</td>
+          <td class="p-3 font-mono font-bold text-white">${a.ticketId}</td>
+          <td class="p-3">${a.analyst}</td>
+          <td class="p-3 font-mono font-black text-emerald-400">${a.score.toFixed(1)}%</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderParetoCharts() {
+      const canvas = document.getElementById('chart-pareto-motivos');
+      if (!canvas) return;
+
+      const audits = BackendDB.audits || [];
+      const totalAudits = audits.length;
+      const aprovadas = audits.filter(a => a.score >= 90).length;
+      const passRate = totalAudits > 0 ? ((aprovadas / totalAudits) * 100).toFixed(1) : '0.0';
+
+      document.getElementById('kpi-pass-rate')?.replaceChildren(document.createTextNode(`${passRate}%`));
+      document.getElementById('kpi-total-audits')?.replaceChildren(document.createTextNode(totalAudits));
+
+      const falhas = audits.filter(a => a.score < 100);
+      const contagem = falhas.reduce((acc, a) => {
+        const m = a.motivoTecnico || a.rca || 'Outros Desvios';
+        acc[m] = (acc[m] || 0) + 1;
+        return acc;
+      }, {});
+
+      const ordenados = Object.entries(contagem).sort((a, b) => b[1] - a[1]);
+      const topOff = document.getElementById('kpi-top-offender');
+      if (topOff) topOff.innerText = ordenados.length > 0 ? ordenados[0][0] : 'Nenhum desvio';
+
+      if (paretoChartInstance) {
+        paretoChartInstance.destroy();
+        paretoChartInstance = null;
+      }
+
+      if (ordenados.length === 0) return;
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const ctx = canvas.getContext('2d');
+      paretoChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ordenados.map(o => o[0]),
+          datasets: [{
+            label: 'Ocorrências',
+            data: ordenados.map(o => o[1]),
+            backgroundColor: '#DF4F91',
+            borderColor: '#000000',
+            borderWidth: 2,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: isDark ? '#94A3B8' : '#334155', font: { weight: 'bold', size: 10 } }, grid: { display: false } },
+            y: { ticks: { color: isDark ? '#94A3B8' : '#334155', precision: 0 }, grid: { color: isDark ? '#334155' : '#E2E8F0' }, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    // DADOS DEMO E PERSISTÊNCIA
+    function salvarNoLocalStorage() {
+      localStorage.setItem('sgq_99food_audits', JSON.stringify(BackendDB.audits));
+      localStorage.setItem('sgq_99food_tickets', JSON.stringify(appTickets));
+    }
+
+    function carregarDoLocalStorage() {
+      try {
+        const a = localStorage.getItem('sgq_99food_audits');
+        const t = localStorage.getItem('sgq_99food_tickets');
+        if (a) BackendDB.audits = JSON.parse(a);
+        if (t) appTickets = JSON.parse(t);
+      } catch (e) {}
+    }
+
+    function carregarDadosDeTeste() {
+      BackendDB.audits = [
+        { date: '2026-10-22 14:30', ticketId: '5764612956585921101', shopId: '5764616735802789001', analyst: 'gabriel.brandao_v [HRO]', leader: 'Paulo Silva', score: 65, motivoTecnico: '[ GRUPOS MODIFICADORES DIFEREM DA FONTE ]' },
+        { date: '2026-10-22 15:45', ticketId: '5764612956585921103', shopId: '5764616735802789003', analyst: 'ana.pereira_v [HRO]', leader: 'Paulo Silva', score: 50, motivoTecnico: '[ VALIDAÇÃO DA FONTE DO MENU - Fonte inválida ]' },
+        { date: '2026-10-22 16:20', ticketId: '5764612956585921104', shopId: '5764616735802789004', analyst: 'gabriel.brandao_v [HRO]', leader: 'Paulo Silva', score: 60, motivoTecnico: '[ DIVERGÊNCIA DE PREÇOS NO MENU ]' },
+        { date: '2026-10-22 17:00', ticketId: '5764612956585921105', shopId: '5764616735802789005', analyst: 'matheus.costa_v [HRO]', leader: 'Marcus Vinicius', score: 100, motivoTecnico: '' }
+      ];
+      appTickets = [
+        { id: 4851, titulo: 'Inconformidade: [ GRUPOS MODIFICADORES DIFEREM DA FONTE ]', severidade: 'Alta', status: 'Em Análise' },
+        { id: 6878, titulo: 'Inconformidade: [ VALIDAÇÃO DA FONTE DO MENU - Fonte inválida ]', severidade: 'Crítica', status: 'Concluído' }
+      ];
+      salvarNoLocalStorage();
+      renderRncTable();
+      renderHistoryTable();
+      renderParetoCharts();
+      showToast('Dados de teste carregados!');
+    }
+
+    function calculateSamplingQuota() {
+      const vol = parseInt(document.getElementById('sample-daily-vol')?.value, 10) || 35;
+      const days = parseInt(document.getElementById('sample-work-days')?.value, 10) || 5;
+      const tier = document.getElementById('sample-tenure-tier')?.value || 'senior';
+      const pct = tier === 'ramp' ? 0.10 : 0.035;
+      const quota = Math.ceil(vol * days * pct);
+      const el = document.getElementById('sample-result-quota');
+      if (el) el.innerText = `${quota} / semana`;
+    }
+
+    function alternarTema() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('sgq_theme', isDark ? 'dark' : 'light');
+      document.getElementById('icon-sun')?.classList.toggle('hidden', !isDark);
+      document.getElementById('icon-moon')?.classList.toggle('hidden', isDark);
+      renderParetoCharts();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-msg');
+      if (msgEl) msgEl.innerText = msg;
+      if (toast) {
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 2500);
+      }
+    }
+
+    function openNewRncModal() { document.getElementById('modal-rnc')?.classList.remove('hidden'); }
+    function closeRncModal() { document.getElementById('modal-rnc')?.classList.add('hidden'); }
+    function saveRncForm() {
+      const titulo = document.getElementById('rnc-modal-titulo')?.value;
+      if (titulo) {
+        appTickets.unshift({ id: Math.floor(1000 + Math.random() * 9000), titulo, severidade: 'Alta', status: 'Em Análise' });
+        salvarNoLocalStorage();
+        renderRncTable();
+        closeRncModal();
+        showToast('Nova RNC Registrada!');
+      }
+    }
+
+    // INICIALIZAÇÃO SEGURA
+    window.addEventListener('DOMContentLoaded', () => {
+      const sel = document.getElementById('input-analyst');
+      if (sel) {
+        sel.innerHTML = TEAM_ROSTER.map(a => `<option value="${a.name}" data-leader="${a.leader}">${a.name} [HRO] (${a.leader})</option>`).join('');
+      }
+
+      carregarDoLocalStorage();
+      if (!BackendDB.audits || BackendDB.audits.length === 0) {
+        carregarDadosDeTeste();
+      }
+
+      const tema = localStorage.getItem('sgq_theme');
+      if (tema === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('icon-sun')?.classList.add('hidden');
+        document.getElementById('icon-moon')?.classList.remove('hidden');
+      }
+
+      runAutoValidation();
+      executarCalculosV5();
+      updateGroceryCalculatorV5();
+      calculateSamplingQuota();
+      switchTab('audit');
+    });
+  </script>
+</body>
+</html>
